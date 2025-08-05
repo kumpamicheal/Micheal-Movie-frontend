@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import api from '../services/api'; // ✅ Make sure this path is correct
 import './SearchResults.css';
 
 const SearchResults = () => {
@@ -25,12 +26,10 @@ const SearchResults = () => {
             setError(null);
 
             try {
-                const res = await fetch(`/api/movies/search?query=${encodeURIComponent(query)}`);
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
+                const res = await api.get(`/movies/search?query=${encodeURIComponent(query)}`);
+                console.log('Search API response:', res.data);
 
-                const data = await res.json();
+                const data = res.data;
 
                 if (Array.isArray(data?.movies) && data.movies.length > 0) {
                     setMovies(data.movies);
