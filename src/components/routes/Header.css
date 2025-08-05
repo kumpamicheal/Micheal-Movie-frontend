@@ -1,0 +1,13 @@
+.genre-link {
+    color: #fff;
+    text-decoration: none;
+    background-color: #333;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.genre-link:hover {
+    background-color: #ffd700;
+    color: #111;
+}

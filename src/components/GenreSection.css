@@ -1,0 +1,37 @@
+.genre-section {
+    margin-bottom: 50px;
+}
+
+.genre-heading {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    color: #007bff;               /* example: blue */
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 8px;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+/* Horizontal scroll container */
+.movie-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+}
+
+.movie-row::-webkit-scrollbar {
+    height: 6px;
+}
+
+.movie-row::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.movie-row::-webkit-scrollbar-track {
+    background: #222;
+}

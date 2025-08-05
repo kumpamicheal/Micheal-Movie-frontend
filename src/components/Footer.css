@@ -1,0 +1,56 @@
+/* Footer container */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    z-index: 1000;
+    border-top: 1px solid #333;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* General icon styles */
+.footer-icon {
+    color: #ccc;            /* Light gray */
+    font-size: 1.4rem;      /* Responsive font size */
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.footer-icon i {
+    font-size: 20px;
+}
+
+/* Hover effect */
+.footer-icon:hover {
+    color: #32cd32;         /* FIMAX theme green */
+}
+
+/* Center icon - library */
+.center-icon {
+    color: #00bcd4;         /* Cyan for center icon */
+    font-size: 1.8rem;
+}
+
+.center-icon i {
+    font-size: 26px;
+}
+.footer-label {
+    display: block;
+    font-size: 0.7rem;
+    color: #ccc;
+    margin-top: 2px;
+    user-select: none;
+}
+
+.footer-icon:hover .footer-label {
+    color: #32cd32; /* match hover color of icons */
+}

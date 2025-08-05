@@ -1,0 +1,87 @@
+.search-results-page {
+    padding: 20px;
+    background-color: #000; /* Optional: for better contrast */
+}
+
+/* Heading above the results */
+.results-heading {
+    font-size: 1.8rem;
+    color: #32cd32; /* Bright green like FIMAX logo */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    border-bottom: 3px solid #32cd32;
+    padding-bottom: 8px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Movie grid layout */
+.movie-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Card link */
+.movie-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Movie card styling */
+.movie-card {
+    width: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #111;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+/* Poster image */
+.movie-poster {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Movie title text */
+.movie-title {
+    padding: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    color: #eee;
+}
+
+/* Feedback text: loading or no results */
+.loading-text,
+.no-results-text {
+    color: #ccc;
+    font-size: 1.2rem;
+    margin: 30px 0;
+    text-align: center;
+}
+
+/* Error message styling if needed */
+.error-text {
+    color: #f44336;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 30px 0;
+}
+
+/* Legacy or fallback class */
+.no-results {
+    font-size: 1.2rem;
+    color: #f44336;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 40px;
+}
