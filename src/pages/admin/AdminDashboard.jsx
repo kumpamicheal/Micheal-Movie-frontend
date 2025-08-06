@@ -22,14 +22,16 @@ const AdminDashboard = () => {
             const res = await api.get('/movies');
             setMovies(res.data);
         } catch (err) {
-            console.error('Failed to fetch movies:', err);
+            console.error('❌ Failed to fetch movies:', err);
         }
     };
 
     const handleUploadMovie = async (e) => {
         e.preventDefault();
+        console.log("📤 Upload Movie button clicked");
+
         if (!title || !genre || !video) {
-            alert('Title, genre, and video are required');
+            alert('❗ Title, genre, and video are required');
             return;
         }
 
@@ -37,6 +39,12 @@ const AdminDashboard = () => {
         formData.append('title', title);
         formData.append('genre', genre);
         formData.append('video', video);
+
+        console.log("📦 Uploading movie with data:", {
+            title,
+            genre,
+            video,
+        });
 
         try {
             const res = await api.post('/movies', formData, {
@@ -46,19 +54,21 @@ const AdminDashboard = () => {
                 },
             });
 
-            alert('Movie uploaded! Now upload the poster.');
+            console.log("✅ Upload success:", res.data);
+            alert('🎉 Movie uploaded! Now upload the poster.');
+
             setCreatedMovie(res.data.movie || res.data);
             setTitle('');
             setGenre('');
             setVideo(null);
         } catch (err) {
-            console.error('Movie upload failed:', err.response?.data || err.message);
-            alert('Movie upload failed: ' + (err.response?.data?.error || err.message));
+            console.error('❌ Movie upload failed:', err.response?.data || err.message);
+            alert('❌ Movie upload failed: ' + (err.response?.data?.error || err.message));
         }
     };
 
     const handlePosterUploaded = () => {
-        alert('Poster uploaded successfully!');
+        alert('🖼️ Poster uploaded successfully!');
         fetchMovies();
         setCreatedMovie(null);
     };
@@ -69,11 +79,11 @@ const AdminDashboard = () => {
             await api.delete(`/movies/${movieId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            alert('Video deleted successfully!');
+            alert('🗑️ Video deleted successfully!');
             setMovies((prev) => prev.filter((movie) => movie._id !== movieId));
         } catch (err) {
-            console.error('Deletion failed:', err);
-            alert('Failed to delete video');
+            console.error('❌ Deletion failed:', err);
+            alert('❌ Failed to delete video');
         }
     };
 
@@ -84,11 +94,11 @@ const AdminDashboard = () => {
                 data: { movieId, posterPublicId },
                 headers: { Authorization: `Bearer ${token}` },
             });
-            alert('Poster deleted successfully!');
+            alert('🗑️ Poster deleted successfully!');
             fetchMovies();
         } catch (err) {
-            console.error('Failed to delete poster:', err);
-            alert('Failed to delete poster');
+            console.error('❌ Failed to delete poster:', err);
+            alert('❌ Failed to delete poster');
         }
     };
 
@@ -105,7 +115,7 @@ const AdminDashboard = () => {
         <div className="admin-dashboard">
             <h2>Admin Dashboard</h2>
 
-            {/* Movie upload section */}
+            {/* Movie upload form */}
             {!createdMovie ? (
                 <form onSubmit={handleUploadMovie}>
                     <input
@@ -125,7 +135,10 @@ const AdminDashboard = () => {
                     <input
                         type="file"
                         accept="video/*"
-                        onChange={(e) => setVideo(e.target.files[0])}
+                        onChange={(e) => {
+                            console.log("🎥 File selected:", e.target.files[0]);
+                            setVideo(e.target.files[0]);
+                        }}
                         required
                     />
                     <button type="submit">Upload Movie</button>
@@ -146,7 +159,7 @@ const AdminDashboard = () => {
                 </div>
             )}
 
-            {/* Movie list section */}
+            {/* Movie List */}
             <div className="movie-list" style={{ marginTop: '2rem' }}>
                 <h3>Uploaded Movies</h3>
                 {movies.map((movie) => (
