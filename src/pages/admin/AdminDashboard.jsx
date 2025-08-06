@@ -49,7 +49,7 @@ const AdminDashboard = () => {
         try {
             const res = await api.post('/movies', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+
                     Authorization: `Bearer ${token}`,
                 },
             });
