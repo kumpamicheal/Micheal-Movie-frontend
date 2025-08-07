@@ -1,12 +1,9 @@
 // src/pages/Home.jsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../services/api'; // ✅ Use your configured axios instance
 import GenreSection from '../components/GenreSection';
 import Header from '../components/Header';
 import './Home.css';
-
-const API_URL = process.env.REACT_APP_API_URL + '/movies';
-
 
 const Home = () => {
     const [moviesByGenre, setMoviesByGenre] = useState({});
@@ -14,7 +11,7 @@ const Home = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const res = await axios.get(API_URL);
+                const res = await api.get('/movies'); // ✅ Use the correct api instance
                 const movies = res.data;
 
                 const grouped = {};
@@ -38,8 +35,6 @@ const Home = () => {
     return (
         <div className="home">
             <Header />
-
-            {/* Add margin or padding here so the genres start below the header */}
             <main style={{ padding: '20px', marginTop: '20px' }}>
                 {Object.keys(moviesByGenre).length === 0 ? (
                     <p>No movies available.</p>

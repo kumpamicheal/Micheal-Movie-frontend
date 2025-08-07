@@ -1,15 +1,13 @@
 // src/services/api.js
 import axios from 'axios';
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.REACT_APP_ENV === 'development';
 
 const api = axios.create({
     baseURL: isDev
-        ? 'http://localhost:5000/api'
-        : 'https://micheal-movie-backend.onrender.com/api',
-    headers: {
-        'Content-Type': 'application/json',
-    },
+        ? process.env.REACT_APP_LOCAL_URL
+        : process.env.REACT_APP_DEPLOYED_URL,
+    // ✅ Don't set Content-Type globally here
 });
 
 // Optional: Attach token if available in localStorage

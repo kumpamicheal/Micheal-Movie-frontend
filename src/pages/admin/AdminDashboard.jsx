@@ -12,6 +12,7 @@ const AdminDashboard = () => {
     const [video, setVideo] = useState(null);
     const [createdMovie, setCreatedMovie] = useState(null);
     const [movies, setMovies] = useState([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     useEffect(() => {
         fetchMovies();
@@ -47,30 +48,37 @@ const AdminDashboard = () => {
         });
 
         try {
+            setUploadProgress(0);
             const res = await api.post('/movies', formData, {
                 headers: {
-
                     Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress: (progressEvent) => {
+                    const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    console.log(`📤 Upload progress: ${percent}%`);
+                    setUploadProgress(percent);
                 },
             });
 
-            console.log("✅ Upload success:", res.data);
-            alert('🎉 Movie uploaded! Now upload the poster.');
+            const movieData = res.data;
 
-            setCreatedMovie(res.data.movie || res.data);
+            if (!movieData || !movieData._id) {
+                throw new Error('❌ No _id returned for created movie');
+            }
+
+            alert('✅ Movie uploaded successfully!');
+            setCreatedMovie(movieData);
             setTitle('');
             setGenre('');
             setVideo(null);
+            setUploadProgress(0);
+            fetchMovies();
         } catch (err) {
             console.error('❌ Movie upload failed:', err.response?.data || err.message);
             alert('❌ Movie upload failed: ' + (err.response?.data?.error || err.message));
+            setUploadProgress(0);
         }
-    };
-
-    const handlePosterUploaded = () => {
-        alert('🖼️ Poster uploaded successfully!');
-        fetchMovies();
-        setCreatedMovie(null);
     };
 
     const handleDeleteVideo = async (movieId) => {
@@ -102,6 +110,11 @@ const AdminDashboard = () => {
         }
     };
 
+    const handlePosterUploaded = () => {
+        setCreatedMovie(null);
+        fetchMovies();
+    };
+
     if (!isAdmin) {
         return (
             <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -115,7 +128,6 @@ const AdminDashboard = () => {
         <div className="admin-dashboard">
             <h2>Admin Dashboard</h2>
 
-            {/* Movie upload form */}
             {!createdMovie ? (
                 <form onSubmit={handleUploadMovie}>
                     <input
@@ -142,24 +154,47 @@ const AdminDashboard = () => {
                         required
                     />
                     <button type="submit">Upload Movie</button>
+
+                    {/* Upload progress bar */}
+                    {uploadProgress > 0 && (
+                        <div style={{ marginTop: '10px' }}>
+                            <div style={{
+                                width: '100%',
+                                backgroundColor: '#eee',
+                                borderRadius: '4px',
+                                overflow: 'hidden',
+                            }}>
+                                <div style={{
+                                    width: `${uploadProgress}%`,
+                                    backgroundColor: '#4caf50',
+                                    height: '10px',
+                                    transition: 'width 0.4s ease-in-out'
+                                }} />
+                            </div>
+                            <p>{uploadProgress}%</p>
+                        </div>
+                    )}
                 </form>
             ) : (
-                <div style={{ marginTop: '1rem' }}>
-                    <h3>Upload Poster for: {createdMovie.title}</h3>
-                    <PosterUploader
-                        movieId={createdMovie._id}
-                        onPosterUploaded={handlePosterUploaded}
-                    />
-                    <button
-                        onClick={() => setCreatedMovie(null)}
-                        style={{ marginTop: '10px' }}
-                    >
-                        Cancel Poster Upload
-                    </button>
-                </div>
+                createdMovie._id ? (
+                    <div style={{ marginTop: '1rem' }}>
+                        <h3>Upload Poster for: {createdMovie.title}</h3>
+                        <PosterUploader
+                            movieId={createdMovie._id}
+                            onPosterUploaded={handlePosterUploaded}
+                        />
+                        <button
+                            onClick={() => setCreatedMovie(null)}
+                            style={{ marginTop: '10px' }}
+                        >
+                            Cancel Poster Upload
+                        </button>
+                    </div>
+                ) : (
+                    <p style={{ color: 'red' }}>❌ Cannot upload poster: Invalid or missing movie ID.</p>
+                )
             )}
 
-            {/* Movie List */}
             <div className="movie-list" style={{ marginTop: '2rem' }}>
                 <h3>Uploaded Movies</h3>
                 {movies.map((movie) => (
