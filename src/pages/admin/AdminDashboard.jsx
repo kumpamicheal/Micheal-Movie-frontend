@@ -39,7 +39,12 @@ const AdminDashboard = () => {
 
         try {
             // ✅ Get Cloudinary signature from backend
-            const { data: signData } = await api.get('/movies/sign');
+            const { data: signData } = await api.get('/movies/sign', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
 
             const formData = new FormData();
             formData.append('title', title);
