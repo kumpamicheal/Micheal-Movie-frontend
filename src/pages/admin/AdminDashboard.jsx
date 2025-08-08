@@ -27,7 +27,7 @@ const AdminDashboard = () => {
         }
     };
 
-    // ✅ Video Upload with Signature
+    // ✅ UPDATED: Movie Upload (removed /movies/sign)
     const handleUploadMovie = async (e) => {
         e.preventDefault();
         console.log("📤 Upload Movie button clicked");
@@ -38,20 +38,10 @@ const AdminDashboard = () => {
         }
 
         try {
-            // ✅ Get Cloudinary signature from backend
-            const { data: signData } = await api.get('/movies/sign', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-
-
             const formData = new FormData();
             formData.append('title', title);
             formData.append('genre', genre);
             formData.append('video', video);
-            formData.append('timestamp', signData.timestamp);
-            formData.append('signature', signData.signature);
 
             setUploadProgress(0);
 
