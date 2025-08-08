@@ -27,6 +27,7 @@ const AdminDashboard = () => {
         }
     };
 
+    // ✅ Video Upload with Signature
     const handleUploadMovie = async (e) => {
         e.preventDefault();
         console.log("📤 Upload Movie button clicked");
@@ -36,19 +37,19 @@ const AdminDashboard = () => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('genre', genre);
-        formData.append('video', video);
-
-        console.log("📦 Uploading movie with data:", {
-            title,
-            genre,
-            video,
-        });
-
         try {
+            // ✅ Get Cloudinary signature from backend
+            const { data: signData } = await api.get('/movies/sign');
+
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('genre', genre);
+            formData.append('video', video);
+            formData.append('timestamp', signData.timestamp);
+            formData.append('signature', signData.signature);
+
             setUploadProgress(0);
+
             const res = await api.post('/movies', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
