@@ -27,7 +27,6 @@ const AdminDashboard = () => {
         }
     };
 
-    // ✅ UPDATED: Movie Upload (removed /movies/sign)
     const handleUploadMovie = async (e) => {
         e.preventDefault();
         console.log("📤 Upload Movie button clicked");
@@ -38,14 +37,13 @@ const AdminDashboard = () => {
         }
 
         try {
+            // Step 1: Upload video file
             const formData = new FormData();
-            formData.append('title', title);
-            formData.append('genre', genre);
             formData.append('video', video);
 
             setUploadProgress(0);
 
-            const res = await api.post('/movies', formData, {
+            const uploadRes = await api.post('/upload/video', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -57,9 +55,32 @@ const AdminDashboard = () => {
                 },
             });
 
-            const movieData = res.data;
+            const { videoUrl, publicId } = uploadRes.data;
+            if (!videoUrl || !publicId) {
+                throw new Error('❌ Upload did not return videoUrl or publicId');
+            }
 
-            if (!movieData || !movieData._id) {
+            // Step 2: Save movie metadata
+            const movieRes = await fetch('/api/movies', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    title,
+                    genre,
+                    videoUrl,
+                    publicId,
+                }),
+            });
+
+            if (!movieRes.ok) {
+                throw new Error(`❌ Failed to save movie: ${movieRes.statusText}`);
+            }
+
+            const movieData = await movieRes.json();
+            if (!movieData._id) {
                 throw new Error('❌ No _id returned for created movie');
             }
 
@@ -70,9 +91,10 @@ const AdminDashboard = () => {
             setVideo(null);
             setUploadProgress(0);
             fetchMovies();
+
         } catch (err) {
-            console.error('❌ Movie upload failed:', err.response?.data || err.message);
-            alert('❌ Movie upload failed: ' + (err.response?.data?.error || err.message));
+            console.error('❌ Movie upload failed:', err);
+            alert('❌ Movie upload failed: ' + err.message);
             setUploadProgress(0);
         }
     };
