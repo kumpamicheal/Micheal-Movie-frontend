@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
 const AdminDashboard = () => {
@@ -8,6 +8,22 @@ const AdminDashboard = () => {
     const [videoFile, setVideoFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [message, setMessage] = useState('');
+    const [movies, setMovies] = useState([]); // Store fetched movies
+
+    // ✅ Fetch movies on component mount
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                const res = await api.get('/movies');
+                console.log('Movies fetched:', res.data);
+                setMovies(res.data);
+            } catch (err) {
+                console.error('Failed to fetch movies:', err);
+            }
+        };
+
+        fetchMovies();
+    }, []);
 
     // Upload to Cloudinary unsigned
     const uploadToCloudinary = async (file, folder, resourceType) => {
@@ -56,6 +72,11 @@ const AdminDashboard = () => {
             setGenre('');
             setPosterFile(null);
             setVideoFile(null);
+
+            // ✅ Refresh movie list after upload
+            const res = await api.get('/movies');
+            setMovies(res.data);
+
         } catch (err) {
             console.error(err);
             setMessage('Error uploading movie.');
@@ -117,6 +138,20 @@ const AdminDashboard = () => {
             </form>
 
             {message && <p style={{ marginTop: '1rem' }}>{message}</p>}
+
+            {/* ✅ Display movies list */}
+            {movies.length > 0 && (
+                <div style={{ marginTop: '2rem' }}>
+                    <h2>Uploaded Movies</h2>
+                    <ul>
+                        {movies.map((movie) => (
+                            <li key={movie._id}>
+                                <strong>{movie.title}</strong> — {movie.genre}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 };
