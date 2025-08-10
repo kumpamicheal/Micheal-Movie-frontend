@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api'; // ✅ Use your configured axios instance
 import GenreSection from '../components/GenreSection';
 import Header from '../components/Header';
+import Library from './Library'; // ✅ Correct path since Library is in "pages"
 import './Home.css';
 
 const Home = () => {
     const [moviesByGenre, setMoviesByGenre] = useState({});
+    const [allMovies, setAllMovies] = useState([]); // ✅ Store all movies
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -14,6 +16,10 @@ const Home = () => {
                 const res = await api.get('/movies'); // ✅ Use the correct api instance
                 const movies = res.data;
 
+                // ✅ Save all movies for Library
+                setAllMovies(movies);
+
+                // ✅ Group by genre for GenreSection
                 const grouped = {};
                 movies.forEach((movie) => {
                     const genre = movie.genre?.trim() || 'Unknown';
@@ -39,13 +45,18 @@ const Home = () => {
                 {Object.keys(moviesByGenre).length === 0 ? (
                     <p>No movies available.</p>
                 ) : (
-                    Object.entries(moviesByGenre).map(([genre, movies]) => (
-                        <GenreSection
-                            key={genre}
-                            genre={genre}
-                            movies={movies}
-                        />
-                    ))
+                    <>
+                        {Object.entries(moviesByGenre).map(([genre, movies]) => (
+                            <GenreSection
+                                key={genre}
+                                genre={genre}
+                                movies={movies}
+                            />
+                        ))}
+
+                        {/* ✅ Library Section */}
+                        <Library movies={allMovies} />
+                    </>
                 )}
             </main>
         </div>

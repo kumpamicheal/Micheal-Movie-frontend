@@ -1,44 +1,45 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import MovieCard from "./MovieCard";
+import "./Library.css"; // optional styling
 
-const movies = [
-    { _id: 1, title: 'Movie A', genre: 'horror', posterUrl: 'https://via.placeholder.com/150x225?text=Movie+A' },
-    { _id: 2, title: 'Movie B', genre: 'comedy', posterUrl: 'https://via.placeholder.com/150x225?text=Movie+B' },
-    { _id: 3, title: 'Movie C', genre: 'action', posterUrl: 'https://via.placeholder.com/150x225?text=Movie+C' },
-    { _id: 4, title: 'Movie D', genre: 'drama', posterUrl: 'https://via.placeholder.com/150x225?text=Movie+D' },
-    { _id: 5, title: 'Movie E', genre: 'romance', posterUrl: 'https://via.placeholder.com/150x225?text=Movie+E' },
-    { _id: 6, title: 'Movie F', genre: 'sci-fi', posterUrl: 'https://via.placeholder.com/150x225?text=Movie+F' },
-    // Add more movie objects here as needed
-];
+const Library = ({ movies }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const moviesPerPage = 10; // Number of movies per page
 
-const Library = () => {
-    const { genre } = useParams(); // e.g. "horror", "action", etc.
+    // Sort by newest first (assuming createdAt exists)
+    const sortedMovies = [...movies].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
 
-    // If genre param exists, filter by it (case insensitive), otherwise show all movies
-    const filteredMovies = genre
-        ? movies.filter(movie => movie.genre.toLowerCase() === genre.toLowerCase())
-        : movies;
+    // Pagination calculations
+    const indexOfLastMovie = currentPage * moviesPerPage;
+    const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+    const currentMovies = sortedMovies.slice(indexOfFirstMovie, indexOfLastMovie);
+
+    const totalPages = Math.ceil(sortedMovies.length / moviesPerPage);
 
     return (
-        <div>
-            <h2>{genre ? `Genre: ${genre.charAt(0).toUpperCase() + genre.slice(1)}` : 'All Movies'}</h2>
-            <div className="movie-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-                {filteredMovies.length > 0 ? (
-                    filteredMovies.map(movie => (
-                        <div key={movie._id} className="movie-card" style={{ width: '150px' }}>
-                            <img
-                                src={movie.posterUrl}
-                                alt={movie.title}
-                                style={{ width: '100%', height: '225px', objectFit: 'cover', borderRadius: '8px' }}
-                            />
-                            <h3 style={{ fontSize: '1rem', marginTop: '8px', textAlign: 'center' }}>{movie.title}</h3>
-                        </div>
-                    ))
-                ) : (
-                    <p>No movies found for this genre.</p>
-                )}
+        <section className="library-section">
+            <h2 className="library-heading">Library</h2>
+            <div className="movie-grid">
+                {currentMovies.map((movie) => (
+                    <MovieCard key={movie._id || movie.id} movie={movie} />
+                ))}
             </div>
-        </div>
+
+            {/* Pagination buttons */}
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index + 1}
+                        onClick={() => setCurrentPage(index + 1)}
+                        className={currentPage === index + 1 ? "active" : ""}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
+        </section>
     );
 };
 
