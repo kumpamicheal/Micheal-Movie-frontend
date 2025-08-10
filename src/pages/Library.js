@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import MovieCard from "../../components/MovieCard";
+import { useLocation } from "react-router-dom"; // ✅ to get movies from Link state
+import MovieCard from "../components/MovieCard";
 
 import "./Library.css"; // optional styling
 
-const Library = ({ movies }) => {
+const Library = () => {
+    const location = useLocation();
+    const movies = location.state?.movies || []; // ✅ get movies from state
+
     const [currentPage, setCurrentPage] = useState(1);
-    const moviesPerPage = 10; // Number of movies per page
+    const moviesPerPage = 10;
 
     // Sort by newest first (assuming createdAt exists)
     const sortedMovies = [...movies].sort(

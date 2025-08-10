@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api'; // ✅ Use your configured axios instance
 import GenreSection from '../components/GenreSection';
 import Header from '../components/Header';
-// import Library from './Library'; // ❌ Removed Library import
+import Footer from '../components/Footer'; // ✅ Added Footer import
 import './Home.css';
 
 const Home = () => {
@@ -53,11 +53,12 @@ const Home = () => {
                                 movies={movies}
                             />
                         ))}
-
-                        {/* ❌ Removed Library component */}
                     </>
                 )}
             </main>
+
+            {/* ✅ Pass allMovies to Footer */}
+            <Footer movies={allMovies} />
         </div>
     );
 };
