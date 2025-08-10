@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const CLOUD_NAME = "dutoofaax"; // your Cloudinary cloud name
 const UPLOAD_PRESET = "unsigned_movies_upload"; // your unsigned preset
+const API_BASE_URL = "https://micheal-movie-backend.onrender.com/api"; // ✅ Updated to your deployed backend
 
 export default function AdminDashboard() {
     const [title, setTitle] = useState("");
@@ -71,7 +72,7 @@ export default function AdminDashboard() {
         }
 
         try {
-            const res = await fetch("http://localhost:5000/movies", {
+            const res = await fetch(`${API_BASE_URL}/movies`, { // ✅ Use deployed server
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
