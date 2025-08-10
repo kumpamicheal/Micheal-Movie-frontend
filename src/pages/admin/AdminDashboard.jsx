@@ -1,159 +1,138 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/api';
+import api from '../../services/api';
 
 const AdminDashboard = () => {
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
-    const [posterFile, setPosterFile] = useState(null);
-    const [videoFile, setVideoFile] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [message, setMessage] = useState('');
-    const [movies, setMovies] = useState([]); // Store fetched movies
+    const [poster, setPoster] = useState(null);
+    const [video, setVideo] = useState(null); // ✅ new
+    const [movies, setMovies] = useState([]);
 
-    // ✅ Fetch movies on component mount
     useEffect(() => {
-        const fetchMovies = async () => {
-            try {
-                const res = await api.get('/movies');
-                console.log('Movies fetched:', res.data);
-                setMovies(res.data);
-            } catch (err) {
-                console.error('Failed to fetch movies:', err);
-            }
-        };
-
         fetchMovies();
     }, []);
 
-    // Upload to Cloudinary unsigned
-    const uploadToCloudinary = async (file, folder, resourceType) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'YOUR_UNSIGNED_UPLOAD_PRESET'); // unsigned preset
-        formData.append('folder', folder);
-
-        const res = await fetch(
-            `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/${resourceType}/upload`,
-            { method: 'POST', body: formData }
-        );
-
-        const data = await res.json();
-        if (!data.secure_url) throw new Error('Upload failed');
-        return data.secure_url;
+    const fetchMovies = async () => {
+        try {
+            const res = await api.get('/movies');
+            setMovies(res.data);
+        } catch (err) {
+            console.error('Failed to fetch movies:', err);
+        }
     };
 
-    const handleSubmit = async (e) => {
+    const handleUpload = async (e) => {
         e.preventDefault();
-        if (!title || !genre || !posterFile || !videoFile) {
-            setMessage('Please fill all fields.');
+        if (!title || !genre || !poster || !video) {
+            alert('All fields are required including video');
             return;
         }
 
         try {
-            setUploading(true);
-            setMessage('Uploading files...');
+            // ✅ 1. Upload poster to Cloudinary unsigned
+            const posterData = new FormData();
+            posterData.append('file', poster);
+            posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_POSTER_PRESET);
 
-            // Upload poster
-            const posterUrl = await uploadToCloudinary(posterFile, 'posters', 'image');
+            const posterRes = await fetch(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                method: 'POST',
+                body: posterData
+            });
+            const posterJson = await posterRes.json();
 
-            // Upload video
-            const videoUrl = await uploadToCloudinary(videoFile, 'movies', 'video');
+            // ✅ 2. Upload video to Cloudinary unsigned
+            const videoData = new FormData();
+            videoData.append('file', video);
+            videoData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_VIDEO_PRESET);
 
-            // Save to backend
+            const videoRes = await fetch(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`, {
+                method: 'POST',
+                body: videoData
+            });
+            const videoJson = await videoRes.json();
+
+            // ✅ 3. Save movie details to backend
             await api.post('/movies', {
                 title,
                 genre,
-                posterUrl,
-                videoUrl
+                posterUrl: posterJson.secure_url,
+                videoUrl: videoJson.secure_url
             });
 
-            setMessage('Movie uploaded successfully!');
+            alert('Upload successful!');
             setTitle('');
             setGenre('');
-            setPosterFile(null);
-            setVideoFile(null);
-
-            // ✅ Refresh movie list after upload
-            const res = await api.get('/movies');
-            setMovies(res.data);
-
+            setPoster(null);
+            setVideo(null);
+            fetchMovies();
         } catch (err) {
-            console.error(err);
-            setMessage('Error uploading movie.');
-        } finally {
-            setUploading(false);
+            console.error('Upload failed:', err);
+            alert('Upload failed: ' + err.message);
         }
     };
 
     return (
-        <div style={{ maxWidth: 600, margin: '2rem auto', padding: '1rem' }}>
-            <h1>Admin Dashboard</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Title</label>
+        <div style={styles.container}>
+            <h2>Admin Dashboard</h2>
+
+            {/* Upload Form */}
+            <form onSubmit={handleUpload} style={styles.form}>
                 <input
                     type="text"
+                    placeholder="Movie Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    style={{ width: '100%', marginBottom: '1rem' }}
+                    style={styles.input}
                 />
-
-                <label>Genre</label>
                 <input
                     type="text"
+                    placeholder="Genre"
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
-                    style={{ width: '100%', marginBottom: '1rem' }}
+                    style={styles.input}
                 />
-
-                <label>Poster</label>
                 <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setPosterFile(e.target.files[0])}
-                    style={{ width: '100%', marginBottom: '1rem' }}
+                    onChange={(e) => setPoster(e.target.files[0])}
+                    style={styles.input}
                 />
-
-                <label>Video</label>
                 <input
                     type="file"
                     accept="video/*"
-                    onChange={(e) => setVideoFile(e.target.files[0])}
-                    style={{ width: '100%', marginBottom: '1rem' }}
+                    onChange={(e) => setVideo(e.target.files[0])}
+                    style={styles.input}
                 />
-
-                <button
-                    type="submit"
-                    disabled={uploading}
-                    style={{
-                        background: '#007bff',
-                        color: 'white',
-                        padding: '0.6rem 1.2rem',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    {uploading ? 'Uploading...' : 'Upload Movie'}
-                </button>
+                <button type="submit" style={styles.button}>Upload</button>
             </form>
 
-            {message && <p style={{ marginTop: '1rem' }}>{message}</p>}
-
-            {/* ✅ Display movies list */}
-            {movies.length > 0 && (
-                <div style={{ marginTop: '2rem' }}>
-                    <h2>Uploaded Movies</h2>
-                    <ul>
-                        {movies.map((movie) => (
-                            <li key={movie._id}>
-                                <strong>{movie.title}</strong> — {movie.genre}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            {/* Uploaded Movies */}
+            <h3>Uploaded Movies</h3>
+            <div style={styles.grid}>
+                {movies.map((movie) => (
+                    <div key={movie._id} style={styles.card}>
+                        <img
+                            src={movie.posterUrl}
+                            alt={movie.title}
+                            style={styles.poster}
+                        />
+                        <h4>{movie.title}</h4>
+                        <p>{movie.genre}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
+};
+
+const styles = {
+    container: { padding: '20px' },
+    form: { display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '30px' },
+    input: { padding: '10px', fontSize: '16px' },
+    button: { padding: '10px', backgroundColor: '#28a745', color: '#fff', fontWeight: 'bold' },
+    grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' },
+    card: { border: '1px solid #ccc', padding: '10px', borderRadius: '8px' },
+    poster: { width: '100%', height: '250px', objectFit: 'cover', borderRadius: '4px' },
 };
 
 export default AdminDashboard;
