@@ -30,27 +30,37 @@ const AdminDashboard = () => {
         }
 
         try {
+            // Log environment variables
+            console.log("Cloudinary Cloud Name:", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
+            console.log("Cloudinary Upload Preset:", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+
             // ✅ 1. Upload poster
             const posterData = new FormData();
             posterData.append('file', poster);
             posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+
+            console.log("Uploading Poster to:", `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`);
 
             const posterRes = await fetch(
                 `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
                 { method: 'POST', body: posterData }
             );
             const posterJson = await posterRes.json();
+            console.log("Poster Upload Response:", posterJson);
 
             // ✅ 2. Upload video
             const videoData = new FormData();
             videoData.append('file', video);
             videoData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
 
+            console.log("Uploading Video to:", `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`);
+
             const videoRes = await fetch(
                 `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`,
                 { method: 'POST', body: videoData }
             );
             const videoJson = await videoRes.json();
+            console.log("Video Upload Response:", videoJson);
 
             // ✅ 3. Save to backend
             await api.post('/movies', {
