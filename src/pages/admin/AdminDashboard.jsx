@@ -1,140 +1,124 @@
-// src/pages/AdminDashboard.jsx
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import api from '../services/api';
 
-const API_BASE_URL = "https://micheal-movie-backend.onrender.com/api";
+const AdminDashboard = () => {
+    const [title, setTitle] = useState('');
+    const [genre, setGenre] = useState('');
+    const [posterFile, setPosterFile] = useState(null);
+    const [videoFile, setVideoFile] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [message, setMessage] = useState('');
 
-export default function AdminDashboard() {
-    const [movies, setMovies] = useState([]);
-    const [title, setTitle] = useState("");
-    const [genre, setGenre] = useState("");
-    const [poster, setPoster] = useState(null);
-    const [video, setVideo] = useState(null);
-
-    const token = localStorage.getItem("token");
-
-    useEffect(() => {
-        fetchMovies();
-    }, []);
-
-    const fetchMovies = async () => {
-        try {
-            const res = await axios.get(`${API_BASE_URL}/movies`);
-            setMovies(res.data);
-        } catch (error) {
-            console.error("Error fetching movies:", error);
-        }
-    };
-
-    const handleCreateMovie = async (e) => {
-        e.preventDefault();
-
-        if (!token) {
-            alert("You are not authorized. Please log in as admin.");
-            return;
-        }
-
+    // Upload to Cloudinary unsigned
+    const uploadToCloudinary = async (file, folder, resourceType) => {
         const formData = new FormData();
-        formData.append("title", title);
-        formData.append("genre", genre);
-        if (poster) formData.append("poster", poster);
-        if (video) formData.append("video", video);
+        formData.append('file', file);
+        formData.append('upload_preset', 'YOUR_UNSIGNED_UPLOAD_PRESET'); // unsigned preset
+        formData.append('folder', folder);
 
-        try {
-            await axios.post(`${API_BASE_URL}/movies`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+        const res = await fetch(
+            `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/${resourceType}/upload`,
+            { method: 'POST', body: formData }
+        );
 
-            alert("Movie added successfully!");
-            setTitle("");
-            setGenre("");
-            setPoster(null);
-            setVideo(null);
-            fetchMovies();
-        } catch (error) {
-            console.error("Error creating movie:", error);
-            alert("Failed to add movie. Check console for details.");
-        }
+        const data = await res.json();
+        if (!data.secure_url) throw new Error('Upload failed');
+        return data.secure_url;
     };
 
-    const handleDeleteMovie = async (id) => {
-        if (!token) {
-            alert("You are not authorized.");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!title || !genre || !posterFile || !videoFile) {
+            setMessage('Please fill all fields.');
             return;
         }
 
-        if (!window.confirm("Are you sure you want to delete this movie?")) return;
-
         try {
-            await axios.delete(`${API_BASE_URL}/movies/${id}`, {
-                headers: { Authorization: `Bearer ${token}` },
+            setUploading(true);
+            setMessage('Uploading files...');
+
+            // Upload poster
+            const posterUrl = await uploadToCloudinary(posterFile, 'posters', 'image');
+
+            // Upload video
+            const videoUrl = await uploadToCloudinary(videoFile, 'movies', 'video');
+
+            // Save to backend
+            await api.post('/movies', {
+                title,
+                genre,
+                posterUrl,
+                videoUrl
             });
-            fetchMovies();
-        } catch (error) {
-            console.error("Error deleting movie:", error);
+
+            setMessage('Movie uploaded successfully!');
+            setTitle('');
+            setGenre('');
+            setPosterFile(null);
+            setVideoFile(null);
+        } catch (err) {
+            console.error(err);
+            setMessage('Error uploading movie.');
+        } finally {
+            setUploading(false);
         }
     };
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div style={{ maxWidth: 600, margin: '2rem auto', padding: '1rem' }}>
             <h1>Admin Dashboard</h1>
-
-            {/* Form to add a new movie */}
-            <form onSubmit={handleCreateMovie} style={{ marginBottom: "30px" }}>
+            <form onSubmit={handleSubmit}>
+                <label>Title</label>
                 <input
                     type="text"
-                    placeholder="Movie Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    required
+                    style={{ width: '100%', marginBottom: '1rem' }}
                 />
+
+                <label>Genre</label>
                 <input
                     type="text"
-                    placeholder="Genre"
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
-                    required
+                    style={{ width: '100%', marginBottom: '1rem' }}
                 />
+
+                <label>Poster</label>
                 <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setPoster(e.target.files[0])}
+                    onChange={(e) => setPosterFile(e.target.files[0])}
+                    style={{ width: '100%', marginBottom: '1rem' }}
                 />
+
+                <label>Video</label>
                 <input
                     type="file"
                     accept="video/*"
-                    onChange={(e) => setVideo(e.target.files[0])}
+                    onChange={(e) => setVideoFile(e.target.files[0])}
+                    style={{ width: '100%', marginBottom: '1rem' }}
                 />
-                <button type="submit">Add Movie</button>
+
+                <button
+                    type="submit"
+                    disabled={uploading}
+                    style={{
+                        background: '#007bff',
+                        color: 'white',
+                        padding: '0.6rem 1.2rem',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer'
+                    }}
+                >
+                    {uploading ? 'Uploading...' : 'Upload Movie'}
+                </button>
             </form>
 
-            {/* List of movies */}
-            <div>
-                <h2>Existing Movies</h2>
-                {movies.length === 0 ? (
-                    <p>No movies found.</p>
-                ) : (
-                    movies.map((movie) => (
-                        <div key={movie._id} style={{ marginBottom: "15px" }}>
-                            <h3>{movie.title}</h3>
-                            <p>Genre: {movie.genre}</p>
-                            {movie.poster && (
-                                <img
-                                    src={movie.poster}
-                                    alt={movie.title}
-                                    style={{ width: "150px", display: "block" }}
-                                />
-                            )}
-                            <button onClick={() => handleDeleteMovie(movie._id)}>
-                                Delete
-                            </button>
-                        </div>
-                    ))
-                )}
-            </div>
+            {message && <p style={{ marginTop: '1rem' }}>{message}</p>}
         </div>
     );
-}
+};
+
+export default AdminDashboard;
