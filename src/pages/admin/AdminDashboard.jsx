@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "../api"; // your axios instance
+import api from "../api"; // Your axios instance
 import "./AdminDashboard.css";
 
 export default function AdminDashboard() {
@@ -11,7 +11,11 @@ export default function AdminDashboard() {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [createdMovie, setCreatedMovie] = useState(null);
 
-    const token = localStorage.getItem("token");
+    const admin = JSON.parse(localStorage.getItem("admin"));
+    const token = admin?.token;
+
+    const CLOUD_NAME = "YOUR_CLOUD_NAME"; // ✅ Replace with your Cloudinary cloud name
+    const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET"; // ✅ Replace with your unsigned preset
 
     useEffect(() => {
         fetchMovies();
@@ -30,17 +34,50 @@ export default function AdminDashboard() {
 
     const handleVideoSelect = (e) => {
         setVideo(e.target.files[0]);
-        console.log("🎥 File selected:", e.target.files[0]);
     };
 
     const handlePosterSelect = (e) => {
         setPoster(e.target.files[0]);
-        console.log("🖼 Poster selected:", e.target.files[0]);
+    };
+
+    const uploadToCloudinary = (file, type) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", UPLOAD_PRESET);
+
+            const endpoint =
+                type === "video"
+                    ? `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`
+                    : `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", endpoint);
+
+            if (type === "video") {
+                xhr.upload.addEventListener("progress", (event) => {
+                    if (event.lengthComputable) {
+                        const percent = Math.round((event.loaded * 100) / event.total);
+                        setUploadProgress(percent);
+                    }
+                });
+            }
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    resolve(JSON.parse(xhr.responseText));
+                } else {
+                    reject(new Error("❌ Upload failed"));
+                }
+            };
+
+            xhr.onerror = () => reject(new Error("❌ Network error"));
+            xhr.send(formData);
+        });
     };
 
     const handleUploadMovie = async (e) => {
         e.preventDefault();
-        console.log("📤 Upload Movie button clicked");
 
         if (!title || !genre || !video) {
             alert("❗ Title, genre, and video are required");
@@ -48,77 +85,27 @@ export default function AdminDashboard() {
         }
 
         try {
-            // Step 1 — Upload video to Cloudinary (unsigned)
-            const cloudName = "YOUR_CLOUD_NAME"; // change this
-            const uploadPreset = "YOUR_UNSIGNED_PRESET"; // change this
-
-            const formData = new FormData();
-            formData.append("file", video);
-            formData.append("upload_preset", uploadPreset);
-            formData.append("resource_type", "video");
-
             setUploadProgress(0);
 
-            const cloudinaryUpload = await new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.open(
-                    "POST",
-                    `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`
-                );
+            // 1️⃣ Upload video
+            const videoUpload = await uploadToCloudinary(video, "video");
+            if (!videoUpload.secure_url) throw new Error("❌ Video upload failed");
 
-                xhr.upload.addEventListener("progress", (event) => {
-                    if (event.lengthComputable) {
-                        const percent = Math.round((event.loaded * 100) / event.total);
-                        setUploadProgress(percent);
-                        console.log(`📤 Upload progress: ${percent}%`);
-                    }
-                });
-
-                xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        resolve(JSON.parse(xhr.responseText));
-                    } else {
-                        reject(new Error("❌ Failed to upload to Cloudinary"));
-                    }
-                };
-
-                xhr.onerror = () => reject(new Error("❌ Network error"));
-
-                xhr.send(formData);
-            });
-
-            if (!cloudinaryUpload.secure_url) {
-                throw new Error("❌ Cloudinary did not return secure_url");
-            }
-
-            console.log("✅ Video uploaded to Cloudinary:", cloudinaryUpload.secure_url);
-
-            // Step 2 — Upload poster (optional)
+            // 2️⃣ Upload poster if exists
             let posterUrl = "";
             if (poster) {
-                const posterFormData = new FormData();
-                posterFormData.append("file", poster);
-                posterFormData.append("upload_preset", uploadPreset);
-
-                const posterRes = await fetch(
-                    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-                    {
-                        method: "POST",
-                        body: posterFormData,
-                    }
-                );
-                const posterData = await posterRes.json();
-                posterUrl = posterData.secure_url || "";
+                const posterUpload = await uploadToCloudinary(poster, "image");
+                posterUrl = posterUpload.secure_url || "";
             }
 
-            // Step 3 — Save movie metadata in backend
+            // 3️⃣ Save movie metadata in backend
             const movieRes = await api.post(
                 "/movies",
                 {
                     title,
                     genre,
-                    videoUrl: cloudinaryUpload.secure_url,
-                    publicId: cloudinaryUpload.public_id,
+                    videoUrl: videoUpload.secure_url,
+                    publicId: videoUpload.public_id,
                     posterUrl,
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -134,7 +121,7 @@ export default function AdminDashboard() {
             fetchMovies();
         } catch (err) {
             console.error("❌ Movie upload failed:", err);
-            alert("❌ Movie upload failed: " + err.message);
+            alert(err.message);
             setUploadProgress(0);
         }
     };
