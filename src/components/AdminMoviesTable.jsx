@@ -12,10 +12,12 @@ const AdminMoviesTable = () => {
         try {
             setLoading(true);
             const res = await axios.get("/api/movies"); // Adjust base URL if needed
-            setMovies(res.data);
+            // Safely extract movies array from response
+            setMovies(Array.isArray(res.data) ? res.data : res.data.movies || []);
             setLoading(false);
         } catch (err) {
             setError("Failed to load movies");
+            setMovies([]); // Ensure movies is always an array
             setLoading(false);
         }
     };
@@ -66,7 +68,12 @@ const AdminMoviesTable = () => {
                             <td>
                                 <button
                                     onClick={() => deleteMovie(movie._id)}
-                                    style={{ background: "red", color: "white", border: "none", padding: "5px 10px" }}
+                                    style={{
+                                        background: "red",
+                                        color: "white",
+                                        border: "none",
+                                        padding: "5px 10px"
+                                    }}
                                 >
                                     Delete
                                 </button>
