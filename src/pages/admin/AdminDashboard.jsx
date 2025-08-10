@@ -1,124 +1,99 @@
-import React, { useState } from "react";
-
-const CLOUD_NAME = "dutoofaax"; // your Cloudinary cloud name
-const UPLOAD_PRESET = "unsigned_movies_upload"; // your unsigned preset
-const API_BASE_URL = "https://micheal-movie-backend.onrender.com/api"; // ✅ Deployed backend
+import React, { useState, useEffect } from "react";
+import api from "../api"; // Axios instance pointing to your backend
 
 export default function AdminDashboard() {
+    const [movies, setMovies] = useState([]);
     const [title, setTitle] = useState("");
     const [genre, setGenre] = useState("");
     const [poster, setPoster] = useState(null);
     const [video, setVideo] = useState(null);
-    const [uploadingPoster, setUploadingPoster] = useState(false);
-    const [uploadingVideo, setUploadingVideo] = useState(false);
 
-    const [posterUrl, setPosterUrl] = useState("");
-    const [videoUrl, setVideoUrl] = useState("");
-
-    // Upload to Cloudinary
-    const uploadFile = async (file, resourceType) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", UPLOAD_PRESET);
-
-        const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`;
-
-        const res = await fetch(cloudinaryUrl, {
-            method: "POST",
-            body: formData,
-        });
-
-        const data = await res.json();
-        if (data.secure_url) {
-            return data.secure_url;
-        } else {
-            throw new Error(data.error?.message || "Upload failed");
-        }
-    };
-
-    const handlePosterUpload = async () => {
-        if (!poster) return alert("Please select a poster");
-        setUploadingPoster(true);
+    // Fetch all movies for admin
+    const fetchMovies = async () => {
         try {
-            const url = await uploadFile(poster, "image");
-            setPosterUrl(url);
-            alert("Poster uploaded successfully");
+            const res = await api.get("/movies");
+            setMovies(res.data);
         } catch (err) {
-            console.error(err);
-            alert("Poster upload failed");
+            console.error("Error fetching movies", err);
         }
-        setUploadingPoster(false);
     };
 
-    const handleVideoUpload = async () => {
-        if (!video) return alert("Please select a video");
-        setUploadingVideo(true);
-        try {
-            const url = await uploadFile(video, "video");
-            setVideoUrl(url);
-            alert("Video uploaded successfully");
-        } catch (err) {
-            console.error(err);
-            alert("Video upload failed");
-        }
-        setUploadingVideo(false);
-    };
+    useEffect(() => {
+        fetchMovies();
+    }, []);
 
+    // Handle new movie upload
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!posterUrl || !videoUrl) {
-            return alert("Please upload both video and poster first");
+        if (!poster || !video) {
+            return alert("Please select both a poster and a video file");
         }
 
-        const token = localStorage.getItem("token"); // ✅ Retrieve token from localStorage
+        const token = localStorage.getItem("token");
         if (!token) {
-            return alert("No admin token found. Please log in first.");
+            return alert("You must be logged in as admin");
+        }
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("genre", genre);
+        formData.append("poster", poster);
+        formData.append("video", video);
+
+        try {
+            await api.post("/movies", formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            alert("Movie uploaded successfully!");
+            setTitle("");
+            setGenre("");
+            setPoster(null);
+            setVideo(null);
+            fetchMovies();
+        } catch (err) {
+            console.error("Error uploading movie", err);
+            alert("Failed to upload movie");
+        }
+    };
+
+    // Delete movie
+    const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this movie?")) return;
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            return alert("You must be logged in as admin");
         }
 
         try {
-            const res = await fetch(`${API_BASE_URL}/movies`, {
-                method: "POST",
+            await api.delete(`/movies/${id}`, {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`, // ✅ Send token
+                    Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    title,
-                    genre,
-                    posterUrl,
-                    videoUrl,
-                }),
             });
-
-            if (res.ok) {
-                alert("Movie added successfully!");
-                setTitle("");
-                setGenre("");
-                setPoster(null);
-                setVideo(null);
-                setPosterUrl("");
-                setVideoUrl("");
-            } else if (res.status === 401) {
-                alert("Unauthorized. Please log in as admin.");
-            } else {
-                alert("Failed to save movie to backend");
-            }
+            alert("Movie deleted successfully");
+            fetchMovies();
         } catch (err) {
-            console.error(err);
-            alert("Error saving movie");
+            console.error("Error deleting movie", err);
+            alert("Failed to delete movie");
         }
     };
 
     return (
         <div style={{ padding: "20px" }}>
             <h1>Admin Dashboard</h1>
+
+            {/* Movie Upload Form */}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Movie Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    required
                 />
                 <br />
                 <input
@@ -126,35 +101,39 @@ export default function AdminDashboard() {
                     placeholder="Genre"
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
+                    required
                 />
                 <br />
-
-                {/* Poster Upload */}
                 <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => setPoster(e.target.files[0])}
+                    required
                 />
-                <button type="button" onClick={handlePosterUpload} disabled={uploadingPoster}>
-                    {uploadingPoster ? "Uploading Poster..." : "Upload Poster"}
-                </button>
-                {posterUrl && <p>Poster uploaded ✅</p>}
                 <br />
-
-                {/* Video Upload */}
                 <input
                     type="file"
                     accept="video/*"
                     onChange={(e) => setVideo(e.target.files[0])}
+                    required
                 />
-                <button type="button" onClick={handleVideoUpload} disabled={uploadingVideo}>
-                    {uploadingVideo ? "Uploading Video..." : "Upload Video"}
-                </button>
-                {videoUrl && <p>Video uploaded ✅</p>}
                 <br />
-
-                <button type="submit">Save Movie</button>
+                <button type="submit">Upload Movie</button>
             </form>
+
+            {/* Movie List with Delete Option */}
+            <h2>Uploaded Movies</h2>
+            <ul>
+                {movies.map((movie) => (
+                    <li key={movie._id}>
+                        <strong>{movie.title}</strong> - {movie.genre}
+                        <br />
+                        <img src={movie.posterUrl} alt={movie.title} width="100" />
+                        <br />
+                        <button onClick={() => handleDelete(movie._id)}>Delete</button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
