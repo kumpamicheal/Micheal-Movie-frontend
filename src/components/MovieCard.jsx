@@ -3,6 +3,8 @@ import React from 'react';
 const MovieCard = ({ movie, sliderMatch }) => {
     if (!movie || typeof movie !== 'object') return null;
 
+    console.log("🎥 MovieCard movie data:", movie);
+
     const linkToMovie = sliderMatch?.linkToMovie || `/movie/${movie._id || movie.id || ''}`;
     const posterUrl = movie.poster || movie.posterUrl;
     const title = movie.title || 'Untitled';
@@ -46,5 +48,6 @@ const MovieCard = ({ movie, sliderMatch }) => {
         </a>
     );
 };
+
 
 export default MovieCard;
