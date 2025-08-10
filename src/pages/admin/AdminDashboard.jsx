@@ -1,3 +1,4 @@
+// AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 
@@ -5,7 +6,7 @@ const AdminDashboard = () => {
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
     const [poster, setPoster] = useState(null);
-    const [video, setVideo] = useState(null); // ✅ new
+    const [video, setVideo] = useState(null);
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
@@ -29,29 +30,29 @@ const AdminDashboard = () => {
         }
 
         try {
-            // ✅ 1. Upload poster to Cloudinary unsigned
+            // ✅ 1. Upload poster
             const posterData = new FormData();
             posterData.append('file', poster);
-            posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_POSTER_PRESET);
+            posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
 
-            const posterRes = await fetch(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                method: 'POST',
-                body: posterData
-            });
+            const posterRes = await fetch(
+                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+                { method: 'POST', body: posterData }
+            );
             const posterJson = await posterRes.json();
 
-            // ✅ 2. Upload video to Cloudinary unsigned
+            // ✅ 2. Upload video
             const videoData = new FormData();
             videoData.append('file', video);
-            videoData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_VIDEO_PRESET);
+            videoData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
 
-            const videoRes = await fetch(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`, {
-                method: 'POST',
-                body: videoData
-            });
+            const videoRes = await fetch(
+                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`,
+                { method: 'POST', body: videoData }
+            );
             const videoJson = await videoRes.json();
 
-            // ✅ 3. Save movie details to backend
+            // ✅ 3. Save to backend
             await api.post('/movies', {
                 title,
                 genre,
