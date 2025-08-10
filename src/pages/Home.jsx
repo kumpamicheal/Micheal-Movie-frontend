@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api'; // ✅ Use your configured axios instance
 import GenreSection from '../components/GenreSection';
 import Header from '../components/Header';
-import Library from './Library'; // ✅ Correct path since Library is in "pages"
+// import Library from './Library'; // ❌ Removed Library import
 import './Home.css';
 
 const Home = () => {
@@ -54,8 +54,7 @@ const Home = () => {
                             />
                         ))}
 
-                        {/* ✅ Library Section */}
-                        <Library movies={allMovies} />
+                        {/* ❌ Removed Library component */}
                     </>
                 )}
             </main>
