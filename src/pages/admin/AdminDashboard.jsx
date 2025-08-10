@@ -7,7 +7,7 @@ const API_BASE_URL = "https://micheal-movie-backend.onrender.com/api";
 export default function AdminDashboard() {
     const [movies, setMovies] = useState([]);
     const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [genre, setGenre] = useState("");
     const [poster, setPoster] = useState(null);
     const [video, setVideo] = useState(null);
 
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
 
         const formData = new FormData();
         formData.append("title", title);
-        formData.append("description", description);
+        formData.append("genre", genre);
         if (poster) formData.append("poster", poster);
         if (video) formData.append("video", video);
 
@@ -50,7 +50,7 @@ export default function AdminDashboard() {
 
             alert("Movie added successfully!");
             setTitle("");
-            setDescription("");
+            setGenre("");
             setPoster(null);
             setVideo(null);
             fetchMovies();
@@ -91,10 +91,11 @@ export default function AdminDashboard() {
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
-                <textarea
-                    placeholder="Movie Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                <input
+                    type="text"
+                    placeholder="Genre"
+                    value={genre}
+                    onChange={(e) => setGenre(e.target.value)}
                     required
                 />
                 <input
@@ -119,7 +120,7 @@ export default function AdminDashboard() {
                     movies.map((movie) => (
                         <div key={movie._id} style={{ marginBottom: "15px" }}>
                             <h3>{movie.title}</h3>
-                            <p>{movie.description}</p>
+                            <p>Genre: {movie.genre}</p>
                             {movie.poster && (
                                 <img
                                     src={movie.poster}
