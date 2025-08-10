@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import api from "../api"; // Axios instance pointing to your backend
 
 export default function AdminDashboard() {
     const [movies, setMovies] = useState([]);
@@ -8,30 +7,20 @@ export default function AdminDashboard() {
     const [poster, setPoster] = useState(null);
     const [video, setVideo] = useState(null);
 
-    // Fetch all movies for admin
-    const fetchMovies = async () => {
-        try {
-            const res = await api.get("/movies");
-            setMovies(res.data);
-        } catch (err) {
-            console.error("Error fetching movies", err);
-        }
-    };
-
+    // ✅ Fetch movies from backend
     useEffect(() => {
-        fetchMovies();
+        fetch("http://localhost:5000/movies")
+            .then((res) => res.json())
+            .then((data) => setMovies(data))
+            .catch((err) => console.error("Error fetching movies:", err));
     }, []);
 
-    // Handle new movie upload
+    // ✅ Handle form submit
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!poster || !video) {
-            return alert("Please select both a poster and a video file");
-        }
 
-        const token = localStorage.getItem("token");
-        if (!token) {
-            return alert("You must be logged in as admin");
+        if (!poster || !video) {
+            return alert("Please select both poster and video");
         }
 
         const formData = new FormData();
@@ -41,44 +30,46 @@ export default function AdminDashboard() {
         formData.append("video", video);
 
         try {
-            await api.post("/movies", formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
+            const res = await fetch("http://localhost:5000/movies", {
+                method: "POST",
+                body: formData,
             });
-            alert("Movie uploaded successfully!");
-            setTitle("");
-            setGenre("");
-            setPoster(null);
-            setVideo(null);
-            fetchMovies();
+
+            if (res.ok) {
+                alert("Movie added successfully!");
+                const newMovie = await res.json();
+                setMovies([...movies, newMovie]);
+                setTitle("");
+                setGenre("");
+                setPoster(null);
+                setVideo(null);
+            } else {
+                alert("Failed to add movie");
+            }
         } catch (err) {
-            console.error("Error uploading movie", err);
-            alert("Failed to upload movie");
+            console.error(err);
+            alert("Error adding movie");
         }
     };
 
-    // Delete movie
+    // ✅ Delete movie
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this movie?")) return;
 
-        const token = localStorage.getItem("token");
-        if (!token) {
-            return alert("You must be logged in as admin");
-        }
-
         try {
-            await api.delete(`/movies/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+            const res = await fetch(`http://localhost:5000/movies/${id}`, {
+                method: "DELETE",
             });
-            alert("Movie deleted successfully");
-            fetchMovies();
+
+            if (res.ok) {
+                setMovies(movies.filter((movie) => movie._id !== id));
+                alert("Movie deleted successfully");
+            } else {
+                alert("Failed to delete movie");
+            }
         } catch (err) {
-            console.error("Error deleting movie", err);
-            alert("Failed to delete movie");
+            console.error(err);
+            alert("Error deleting movie");
         }
     };
 
@@ -86,7 +77,7 @@ export default function AdminDashboard() {
         <div style={{ padding: "20px" }}>
             <h1>Admin Dashboard</h1>
 
-            {/* Movie Upload Form */}
+            {/* Upload form */}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -118,22 +109,51 @@ export default function AdminDashboard() {
                     required
                 />
                 <br />
-                <button type="submit">Upload Movie</button>
+                <button type="submit">Add Movie</button>
             </form>
 
-            {/* Movie List with Delete Option */}
-            <h2>Uploaded Movies</h2>
-            <ul>
-                {movies.map((movie) => (
-                    <li key={movie._id}>
-                        <strong>{movie.title}</strong> - {movie.genre}
-                        <br />
-                        <img src={movie.posterUrl} alt={movie.title} width="100" />
-                        <br />
-                        <button onClick={() => handleDelete(movie._id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            <hr />
+
+            {/* Movie list */}
+            <h2>Movie List</h2>
+            {movies.length === 0 ? (
+                <p>No movies found</p>
+            ) : (
+                <table border="1" cellPadding="8">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Genre</th>
+                        <th>Poster</th>
+                        <th>Video</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {movies.map((movie) => (
+                        <tr key={movie._id}>
+                            <td>{movie.title}</td>
+                            <td>{movie.genre}</td>
+                            <td>
+                                <img
+                                    src={movie.posterUrl}
+                                    alt={movie.title}
+                                    width="80"
+                                />
+                            </td>
+                            <td>
+                                <video width="120" controls>
+                                    <source src={movie.videoUrl} type="video/mp4" />
+                                </video>
+                            </td>
+                            <td>
+                                <button onClick={() => handleDelete(movie._id)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 }
