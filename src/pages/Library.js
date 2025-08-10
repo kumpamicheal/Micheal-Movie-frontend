@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import MovieCard from "./MovieCard";
+import MovieCard from "../../components/MovieCard";
+
 import "./Library.css"; // optional styling
 
 const Library = ({ movies }) => {
