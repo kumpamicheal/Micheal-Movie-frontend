@@ -22,6 +22,7 @@ const Library = () => {
     const currentMovies = sortedMovies.slice(indexOfFirstMovie, indexOfLastMovie);
 
     const totalPages = Math.ceil(sortedMovies.length / moviesPerPage);
+    console.log("Library.jsx loaded");
 
     return (
         <section className="library-section">
