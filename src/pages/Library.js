@@ -1,28 +1,30 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom"; // ✅ to get movies from Link state
+import React, { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
-
-import "./Library.css"; // optional styling
+import "./Library.css";
 
 const Library = () => {
-    const location = useLocation();
-    const movies = location.state?.movies || []; // ✅ get movies from state
-
+    const [movies, setMovies] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const moviesPerPage = 10;
 
-    // Sort by newest first (assuming createdAt exists)
+    useEffect(() => {
+        // Fetch all movies from your backend
+        fetch("https://your-backend-url.onrender.com/api/movies")
+            .then(res => res.json())
+            .then(data => setMovies(data))
+            .catch(err => console.error("Error fetching movies:", err));
+    }, []);
+
+    // Sort newest first
     const sortedMovies = [...movies].sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
 
-    // Pagination calculations
+    // Pagination
     const indexOfLastMovie = currentPage * moviesPerPage;
     const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
     const currentMovies = sortedMovies.slice(indexOfFirstMovie, indexOfLastMovie);
-
     const totalPages = Math.ceil(sortedMovies.length / moviesPerPage);
-    console.log("Library.jsx loaded");
 
     return (
         <section className="library-section">
@@ -33,7 +35,7 @@ const Library = () => {
                 ))}
             </div>
 
-            {/* Pagination buttons */}
+            {/* Pagination */}
             <div className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                     <button
