@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const CLOUD_NAME = "dutoofaax"; // your Cloudinary cloud name
 const UPLOAD_PRESET = "unsigned_movies_upload"; // your unsigned preset
-const API_BASE_URL = "https://micheal-movie-backend.onrender.com/api"; // ✅ Updated to your deployed backend
+const API_BASE_URL = "https://micheal-movie-backend.onrender.com/api"; // ✅ Deployed backend
 
 export default function AdminDashboard() {
     const [title, setTitle] = useState("");
@@ -71,11 +71,17 @@ export default function AdminDashboard() {
             return alert("Please upload both video and poster first");
         }
 
+        const token = localStorage.getItem("token"); // ✅ Retrieve token from localStorage
+        if (!token) {
+            return alert("No admin token found. Please log in first.");
+        }
+
         try {
-            const res = await fetch(`${API_BASE_URL}/movies`, { // ✅ Use deployed server
+            const res = await fetch(`${API_BASE_URL}/movies`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // ✅ Send token
                 },
                 body: JSON.stringify({
                     title,
@@ -93,6 +99,8 @@ export default function AdminDashboard() {
                 setVideo(null);
                 setPosterUrl("");
                 setVideoUrl("");
+            } else if (res.status === 401) {
+                alert("Unauthorized. Please log in as admin.");
             } else {
                 alert("Failed to save movie to backend");
             }
@@ -122,7 +130,11 @@ export default function AdminDashboard() {
                 <br />
 
                 {/* Poster Upload */}
-                <input type="file" accept="image/*" onChange={(e) => setPoster(e.target.files[0])} />
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setPoster(e.target.files[0])}
+                />
                 <button type="button" onClick={handlePosterUpload} disabled={uploadingPoster}>
                     {uploadingPoster ? "Uploading Poster..." : "Upload Poster"}
                 </button>
@@ -130,7 +142,11 @@ export default function AdminDashboard() {
                 <br />
 
                 {/* Video Upload */}
-                <input type="file" accept="video/*" onChange={(e) => setVideo(e.target.files[0])} />
+                <input
+                    type="file"
+                    accept="video/*"
+                    onChange={(e) => setVideo(e.target.files[0])}
+                />
                 <button type="button" onClick={handleVideoUpload} disabled={uploadingVideo}>
                     {uploadingVideo ? "Uploading Video..." : "Upload Video"}
                 </button>
