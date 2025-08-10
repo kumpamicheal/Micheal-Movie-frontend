@@ -1,6 +1,7 @@
 // AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import AdminMoviesTable from '../../components/AdminMoviesTable';
 
 const AdminDashboard = () => {
     const [title, setTitle] = useState('');
@@ -119,19 +120,11 @@ const AdminDashboard = () => {
 
             {/* Uploaded Movies */}
             <h3>Uploaded Movies</h3>
-            <div style={styles.grid}>
-                {movies.map((movie) => (
-                    <div key={movie._id} style={styles.card}>
-                        <img
-                            src={movie.posterUrl}
-                            alt={movie.title}
-                            style={styles.poster}
-                        />
-                        <h4>{movie.title}</h4>
-                        <p>{movie.genre}</p>
-                    </div>
-                ))}
-            </div>
+            <AdminMoviesTable
+                movies={movies}
+                onDelete={(id) => setMovies(movies.filter(movie => movie._id !== id))}
+            />
+
         </div>
     );
 };
