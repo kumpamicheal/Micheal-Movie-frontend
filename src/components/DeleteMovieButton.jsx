@@ -1,16 +1,17 @@
+// DeleteMovieButton.jsx
 import React from "react";
-import axios from "axios";
+import api from "../services/api"; // ✅ use your configured Axios instance
 
 export default function DeleteMovieButton({ movieId, posterUrl, videoUrl, onDeleted }) {
     const handleDelete = async () => {
         if (!window.confirm("Are you sure you want to delete this movie?")) return;
 
         try {
-            await axios.delete(`/api/movies/${movieId}`, {
+            await api.delete(`/movies/${movieId}`, {
                 data: { posterUrl, videoUrl }
             });
 
-            // Optional: callback to parent so it can refresh list
+            // ✅ Trigger parent refresh if provided
             if (onDeleted) onDeleted(movieId);
         } catch (err) {
             console.error("Error deleting movie:", err);
