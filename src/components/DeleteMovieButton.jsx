@@ -9,11 +9,11 @@ export default function DeleteMovieButton({ movieId, posterUrl, videoUrl, onDele
         try {
             // ✅ Delete poster file
             const posterPublicId = posterUrl.split('/').slice(-2).join('/').split('.')[0];
-            await api.post('/admin/delete-file', { filePath: posterPublicId });
+            await api.post('/admin/delete-file', { public_id: posterPublicId });
 
             // ✅ Delete video file
             const videoPublicId = videoUrl.split('/').slice(-2).join('/').split('.')[0];
-            await api.post('/admin/delete-file', { filePath: videoPublicId });
+            await api.post('/admin/delete-file', { public_id: videoPublicId });
 
             // ✅ Delete movie record from DB
             await api.delete(`/movies/${movieId}`);
