@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 
+import DeleteMovieButton from '../../components/DeleteMovieButton';
+
 const AdminDashboard = () => {
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
@@ -82,6 +84,10 @@ const AdminDashboard = () => {
         }
     };
 
+    const removeMovieFromUI = (deletedId) => {
+        setMovies((prev) => prev.filter(movie => movie._id !== deletedId));
+    };
+
     return (
         <div style={styles.container}>
             <h2>Admin Dashboard</h2>
@@ -129,6 +135,14 @@ const AdminDashboard = () => {
                         />
                         <h4>{movie.title}</h4>
                         <p>{movie.genre}</p>
+
+                        <DeleteMovieButton
+                            movieId={movie._id}
+                            posterUrl={movie.posterUrl}
+                            videoUrl={movie.videoUrl}
+                            onDeleted={removeMovieFromUI}
+                        />
+
                     </div>
                 ))}
             </div>
