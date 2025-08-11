@@ -7,9 +7,16 @@ export default function DeleteMovieButton({ movieId, posterUrl, videoUrl, onDele
         if (!window.confirm("Are you sure you want to delete this movie?")) return;
 
         try {
-            await api.delete(`/movies/${movieId}`, {
-                data: { posterUrl, videoUrl }
-            });
+            // ✅ Delete poster file
+            const posterPublicId = posterUrl.split('/').slice(-2).join('/').split('.')[0];
+            await api.post('/delete-file', { public_id: posterPublicId });
+
+            // ✅ Delete video file
+            const videoPublicId = videoUrl.split('/').slice(-2).join('/').split('.')[0];
+            await api.post('/delete-file', { public_id: videoPublicId });
+
+            // ✅ Delete movie record from DB
+            await api.delete(`/movies/${movieId}`);
 
             // ✅ Trigger parent refresh if provided
             if (onDeleted) onDeleted(movieId);
