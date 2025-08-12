@@ -56,8 +56,9 @@ const Library = () => {
                             />
                         )}
 
-                        <h3>{movie.title}</h3>
-                        <p>{movie.genre}</p>
+                        {/* Ensure values are safe strings */}
+                        <h3>{String(movie.title || '')}</h3>
+                        <p>{Array.isArray(movie.genre) ? movie.genre.join(', ') : String(movie.genre || '')}</p>
                     </div>
                 ))}
             </div>
