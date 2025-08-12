@@ -13,8 +13,8 @@ const Library = () => {
             try {
                 setLoading(true);
                 const res = await api.get(`/movies/paginated?page=${page}&limit=8`);
-                setMovies(res.data.movies);
-                setTotalPages(res.data.totalPages);
+                setMovies(res.data.movies || []);
+                setTotalPages(res.data.totalPages || 1);
             } catch (error) {
                 console.error('Error fetching movies:', error);
             } finally {
@@ -38,29 +38,43 @@ const Library = () => {
                     gap: '20px'
                 }}
             >
-                {movies.map((movie) => (
-                    <div
-                        key={movie._id}
-                        style={{
-                            border: '1px solid #ccc',
-                            borderRadius: '8px',
-                            padding: '10px',
-                            textAlign: 'center'
-                        }}
-                    >
-                        {movie.posterUrl && (
-                            <img
-                                src={movie.posterUrl}
-                                alt={movie.title}
-                                style={{ width: '100%', borderRadius: '8px' }}
-                            />
-                        )}
+                {movies.map((movie) => {
+                    console.log("Movie data:", movie); // Debug log
 
-                        {/* Ensure values are safe strings */}
-                        <h3>{String(movie.title || '')}</h3>
-                        <p>{Array.isArray(movie.genre) ? movie.genre.join(', ') : String(movie.genre || '')}</p>
-                    </div>
-                ))}
+                    return (
+                        <div
+                            key={movie._id || Math.random()} // Fallback key if _id missing
+                            style={{
+                                border: '1px solid #ccc',
+                                borderRadius: '8px',
+                                padding: '10px',
+                                textAlign: 'center'
+                            }}
+                        >
+                            {movie.posterUrl && (
+                                <img
+                                    src={movie.posterUrl}
+                                    alt={typeof movie.title === 'string' ? movie.title : 'Movie Poster'}
+                                    style={{ width: '100%', borderRadius: '8px' }}
+                                />
+                            )}
+
+                            <h3>
+                                {typeof movie.title === 'string' || typeof movie.title === 'number'
+                                    ? movie.title
+                                    : JSON.stringify(movie.title)}
+                            </h3>
+
+                            <p>
+                                {typeof movie.genre === 'string' || typeof movie.genre === 'number'
+                                    ? movie.genre
+                                    : Array.isArray(movie.genre)
+                                        ? movie.genre.join(', ')
+                                        : JSON.stringify(movie.genre)}
+                            </p>
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Pagination Controls */}
