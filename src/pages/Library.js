@@ -13,8 +13,9 @@ const Library = () => {
             try {
                 setLoading(true);
                 const res = await api.get(`/movies/paginated?page=${page}&limit=8`);
-                setMovies(res.data.movies || []);
-                setTotalPages(res.data.totalPages || 1);
+                console.log("Fetched movies:", res.data.movies); // Debug API response
+                setMovies(res.data.movies);
+                setTotalPages(res.data.totalPages);
             } catch (error) {
                 console.error('Error fetching movies:', error);
             } finally {
@@ -38,42 +39,40 @@ const Library = () => {
                     gap: '20px'
                 }}
             >
-                {movies.map((movie) => {
-                    console.log("Movie data:", movie); // Debug log
+                {movies.map((movie, idx) => {
+                    try {
+                        console.log("Rendering movie:", movie); // Debug each movie
 
-                    return (
-                        <div
-                            key={movie._id || Math.random()} // Fallback key if _id missing
-                            style={{
-                                border: '1px solid #ccc',
-                                borderRadius: '8px',
-                                padding: '10px',
-                                textAlign: 'center'
-                            }}
-                        >
-                            {movie.posterUrl && (
-                                <img
-                                    src={movie.posterUrl}
-                                    alt={typeof movie.title === 'string' ? movie.title : 'Movie Poster'}
-                                    style={{ width: '100%', borderRadius: '8px' }}
-                                />
-                            )}
+                        return (
+                            <div
+                                key={movie._id || idx}
+                                style={{
+                                    border: '1px solid #ccc',
+                                    borderRadius: '8px',
+                                    padding: '10px',
+                                    textAlign: 'center'
+                                }}
+                            >
+                                {movie.posterUrl && (
+                                    <img
+                                        src={String(movie.posterUrl)}
+                                        alt={String(movie.title || 'Movie Poster')}
+                                        style={{ width: '100%', borderRadius: '8px' }}
+                                    />
+                                )}
 
-                            <h3>
-                                {typeof movie.title === 'string' || typeof movie.title === 'number'
-                                    ? movie.title
-                                    : JSON.stringify(movie.title)}
-                            </h3>
-
-                            <p>
-                                {typeof movie.genre === 'string' || typeof movie.genre === 'number'
-                                    ? movie.genre
-                                    : Array.isArray(movie.genre)
-                                        ? movie.genre.join(', ')
-                                        : JSON.stringify(movie.genre)}
-                            </p>
-                        </div>
-                    );
+                                <h3>{String(movie.title || '')}</h3>
+                                <p>{String(movie.genre || '')}</p>
+                            </div>
+                        );
+                    } catch (err) {
+                        console.error("Error rendering movie:", movie, err);
+                        return (
+                            <div key={`error-${idx}`} style={{ color: 'red' }}>
+                                Error rendering this movie. Check console for details.
+                            </div>
+                        );
+                    }
                 })}
             </div>
 
