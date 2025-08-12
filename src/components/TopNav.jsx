@@ -21,7 +21,7 @@ const TopNav = () => {
             <div className="logo">FIMAX</div>
             <ul className="nav-links">
                 {genres.map((genre) => {
-                    const path = `/genre/${genre}`;
+                    const path = `/genre/${genre.toLowerCase()}`;
                     const isActive = location.pathname === path;
                     return (
                         <li key={genre}>

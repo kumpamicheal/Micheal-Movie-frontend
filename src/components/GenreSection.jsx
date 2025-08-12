@@ -9,10 +9,11 @@ const GenreSection = ({ genre, movies, sliderItems }) => {
     return (
         <section className="genre-section">
             <div className="genre-header">
-                <h2 className="genre-heading">{genre}</h2>
+                {/* Display genre name in uppercase */}
+                <h2 className="genre-heading">{genre.toUpperCase()}</h2>
                 <button
                     className="view-all-btn"
-                    onClick={() => navigate(`/genre/${genre}`)}
+                    onClick={() => navigate(`/genre/${genre.toLowerCase()}`)}
                 >
                     View All →
                 </button>
