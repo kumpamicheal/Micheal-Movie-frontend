@@ -8,7 +8,7 @@ import './Home.css';
 
 const Home = () => {
     const [moviesByGenre, setMoviesByGenre] = useState({});
-    const [allMovies, setAllMovies] = useState([]); // ✅ Store all movies
+    //const [allMovies, setAllMovies] = useState([]); // ✅ Store all movies
 
     useEffect(() => {
         const fetchMovies = async () => {
