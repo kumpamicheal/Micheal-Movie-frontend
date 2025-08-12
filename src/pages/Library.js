@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
-// ✅ Fallback poster (make sure the image exists in public/img/fallback.jpg)
-const FALLBACK_POSTER = '/img/img2.jpg';
 
 const Library = () => {
     const [movies, setMovies] = useState([]);
@@ -47,7 +45,7 @@ const Library = () => {
                         textAlign: 'center'
                     }}>
                         <img
-                            src={movie.posterUrl || FALLBACK_POSTER} // ✅ fallback if no poster
+                            src={movie.posterUrl }
                             alt={movie.title}
                             style={{ width: '100%', borderRadius: '8px' }}
                         />
