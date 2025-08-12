@@ -26,7 +26,8 @@ const SearchResults = () => {
             setError(null);
 
             try {
-                const res = await api.get(`/movies/search?query=${encodeURIComponent(query)}`);
+                // 🔹 Changed from `query=` to `title=` to match backend
+                const res = await api.get(`/movies/search?title=${encodeURIComponent(query)}`);
                 console.log('Search API response:', res.data);
 
                 const data = res.data;
