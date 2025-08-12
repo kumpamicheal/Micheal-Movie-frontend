@@ -17,7 +17,7 @@ const Home = () => {
                 const movies = res.data;
 
                 // ✅ Save all movies for Library
-                setAllMovies(movies);
+                //setAllMovies(movies);
 
                 // ✅ Group by genre for GenreSection
                 const grouped = {};
