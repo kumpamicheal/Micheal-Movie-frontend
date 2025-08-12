@@ -4,11 +4,8 @@
 
 .genre-heading {
     font-size: 1.8rem;
-    margin-bottom: 16px;
-    color: #007bff;               /* example: blue */
-    border-bottom: 3px solid #007bff;
-    padding-bottom: 8px;
-    text-align: left;
+    margin: 0; /* reset bottom margin so border from header works cleanly */
+    color: #007bff; /* example: blue */
     font-weight: 700;
     letter-spacing: 1.2px;
     text-transform: uppercase;
@@ -36,11 +33,14 @@
     background: #222;
 }
 
-/* ===== Added for View All button ===== */
+/* ===== View All row ===== */
 .genre-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 3px solid #007bff; /* underline spans the whole row */
+    padding-bottom: 8px;
+    margin-bottom: 16px;
 }
 
 .view-all-btn {
