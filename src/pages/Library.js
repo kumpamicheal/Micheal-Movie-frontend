@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
-
 const Library = () => {
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
@@ -32,23 +31,31 @@ const Library = () => {
 
             {loading && <p>Loading movies...</p>}
 
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                gap: '20px'
-            }}>
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                    gap: '20px'
+                }}
+            >
                 {movies.map((movie) => (
-                    <div key={movie._id} style={{
-                        border: '1px solid #ccc',
-                        borderRadius: '8px',
-                        padding: '10px',
-                        textAlign: 'center'
-                    }}>
-                        <img
-                            src={movie.posterUrl }
-                            alt={movie.title}
-                            style={{ width: '100%', borderRadius: '8px' }}
-                        />
+                    <div
+                        key={movie._id}
+                        style={{
+                            border: '1px solid #ccc',
+                            borderRadius: '8px',
+                            padding: '10px',
+                            textAlign: 'center'
+                        }}
+                    >
+                        {movie.posterUrl && (
+                            <img
+                                src={movie.posterUrl}
+                                alt={movie.title}
+                                style={{ width: '100%', borderRadius: '8px' }}
+                            />
+                        )}
+
                         <h3>{movie.title}</h3>
                         <p>{movie.genre}</p>
                     </div>
