@@ -35,3 +35,25 @@
 .movie-row::-webkit-scrollbar-track {
     background: #222;
 }
+
+/* ===== Added for View All button ===== */
+.genre-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-all-btn {
+    background: none;
+    border: none;
+    color: #007bff; /* match your heading color */
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.view-all-btn:hover {
+    color: #0056b3; /* darker blue on hover */
+    text-decoration: underline;
+}
