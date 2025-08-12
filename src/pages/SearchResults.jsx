@@ -26,14 +26,15 @@ const SearchResults = () => {
             setError(null);
 
             try {
-                // 🔹 Changed from `query=` to `title=` to match backend
+                // ✅ Match backend: use title param instead of query
                 const res = await api.get(`/movies/search?title=${encodeURIComponent(query)}`);
                 console.log('Search API response:', res.data);
 
-                const data = res.data;
+                // ✅ The backend returns plain array, not { movies: [...] }
+                const data = Array.isArray(res.data) ? res.data : res.data.movies;
 
-                if (Array.isArray(data?.movies) && data.movies.length > 0) {
-                    setMovies(data.movies);
+                if (Array.isArray(data) && data.length > 0) {
+                    setMovies(data);
                 } else {
                     setMovies([]);
                     setNotFound(true);
