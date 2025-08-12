@@ -6,6 +6,14 @@ import './GenreSection.css';
 const GenreSection = ({ genre, movies, sliderItems }) => {
     const navigate = useNavigate();
 
+    // Sort movies by most recent upload (assuming createdAt exists)
+    const sortedMovies = [...movies].sort((a, b) => {
+        const dateA = new Date(a.createdAt || 0);
+        const dateB = new Date(b.createdAt || 0);
+        return dateB - dateA; // recent first
+    });
+
+
     return (
         <section className="genre-section">
             <div className="genre-header">
@@ -20,7 +28,7 @@ const GenreSection = ({ genre, movies, sliderItems }) => {
             </div>
 
             <div className="movie-row">
-                {movies.map((movie) => {
+                {sortedMovies.map((movie) => {
                     if (!movie) return null;
 
                     const match = sliderItems?.find(
