@@ -42,4 +42,5 @@ export default function DeleteMovieButton({ movieId, posterUrl, videoUrl, onDele
             Delete
         </button>
     );
+
 }

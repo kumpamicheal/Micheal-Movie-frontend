@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css'; // Keep your styling
 
-const Footer = ({ movies }) => { // ✅ accept movies from Home
+const Footer = () => { // ✅ accept movies from Home
     return (
         <footer className="footer">
             {/* Home Icon */}
@@ -15,7 +15,6 @@ const Footer = ({ movies }) => { // ✅ accept movies from Home
             {/* Center Library Icon */}
             <Link
                 to="/library"
-                state={{ movies }} // ✅ pass movies via state
                 className="footer-icon center-icon"
                 aria-label="Library"
             >

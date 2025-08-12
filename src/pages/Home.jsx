@@ -57,8 +57,8 @@ const Home = () => {
                 )}
             </main>
 
-            {/* ✅ Pass allMovies to Footer */}
-            <Footer movies={allMovies} />
+
+            <Footer />
         </div>
     );
 };
