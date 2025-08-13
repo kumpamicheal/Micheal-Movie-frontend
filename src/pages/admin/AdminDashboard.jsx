@@ -1,7 +1,6 @@
 // AdminDashboard.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../../services/api';
-
 import DeleteMovieButton from '../../components/DeleteMovieButton';
 
 const AdminDashboard = () => {
@@ -10,6 +9,11 @@ const AdminDashboard = () => {
     const [poster, setPoster] = useState(null);
     const [video, setVideo] = useState(null);
     const [movies, setMovies] = useState([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
+
+    // Refs to reset file inputs
+    const posterInputRef = useRef(null);
+    const videoInputRef = useRef(null);
 
     useEffect(() => {
         fetchMovies();
@@ -32,55 +36,77 @@ const AdminDashboard = () => {
         }
 
         try {
-            // Log environment variables
-            console.log("Cloudinary Cloud Name:", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
-            console.log("Cloudinary Upload Preset:", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
-
-            // ✅ 1. Upload poster
+            // ✅ 1. Upload poster (unsigned)
             const posterData = new FormData();
             posterData.append('file', poster);
             posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
-
-            console.log("Uploading Poster to:", `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`);
 
             const posterRes = await fetch(
                 `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
                 { method: 'POST', body: posterData }
             );
             const posterJson = await posterRes.json();
-            console.log("Poster Upload Response:", posterJson);
+            if (posterJson.error) throw new Error(posterJson.error.message);
 
-            // ✅ 2. Upload video
-            const videoData = new FormData();
-            videoData.append('file', video);
-            videoData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
-
-            console.log("Uploading Video to:", `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`);
-
-            const videoRes = await fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`,
-                { method: 'POST', body: videoData }
-            );
-            const videoJson = await videoRes.json();
-            console.log("Video Upload Response:", videoJson);
-
-            // ✅ 3. Save to backend
-            await api.post('/movies', {
-                title,
-                genre,
-                posterUrl: posterJson.secure_url,
-                videoUrl: videoJson.secure_url
+            // ✅ 2. Request signed params for video from backend
+            const folder = 'movies';
+            const resource_type = 'video';
+            const videoSignRes = await api.get('/cloudinary/sign', {
+                params: { folder, resource_type }
             });
 
-            alert('Upload successful!');
-            setTitle('');
-            setGenre('');
-            setPoster(null);
-            setVideo(null);
-            fetchMovies();
+            const { signature, timestamp, api_key, cloud_name, folder: signedFolder } = videoSignRes.data;
+
+            // ✅ 3. Upload video with progress tracking
+            const videoData = new FormData();
+            videoData.append('file', video);
+            videoData.append('folder', signedFolder);
+            videoData.append('timestamp', timestamp);
+            videoData.append('signature', signature);
+            videoData.append('api_key', api_key);
+
+            await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", `https://api.cloudinary.com/v1_1/${cloud_name}/${resource_type}/upload`);
+                xhr.upload.addEventListener("progress", (e) => {
+                    if (e.lengthComputable) {
+                        setUploadProgress(Math.round((e.loaded * 100) / e.total));
+                    }
+                });
+                xhr.onload = () => {
+                    const res = JSON.parse(xhr.responseText);
+                    if (res.error) reject(new Error(res.error.message));
+                    else resolve(res);
+                };
+                xhr.onerror = () => reject(new Error('Video upload failed'));
+                xhr.send(videoData);
+            }).then(async (videoJson) => {
+                // ✅ 4. Save to backend
+                await api.post('/movies', {
+                    title,
+                    genre,
+                    posterUrl: posterJson.secure_url,
+                    videoUrl: videoJson.secure_url
+                });
+
+                alert('Upload successful!');
+                setTitle('');
+                setGenre('');
+                setPoster(null);
+                setVideo(null);
+                setUploadProgress(0);
+
+                // Reset file inputs
+                if (posterInputRef.current) posterInputRef.current.value = "";
+                if (videoInputRef.current) videoInputRef.current.value = "";
+
+                fetchMovies();
+            });
+
         } catch (err) {
             console.error('Upload failed:', err);
             alert('Upload failed: ' + err.message);
+            setUploadProgress(0);
         }
     };
 
@@ -111,15 +137,20 @@ const AdminDashboard = () => {
                 <input
                     type="file"
                     accept="image/*"
+                    ref={posterInputRef}
                     onChange={(e) => setPoster(e.target.files[0])}
                     style={styles.input}
                 />
                 <input
                     type="file"
                     accept="video/*"
+                    ref={videoInputRef}
                     onChange={(e) => setVideo(e.target.files[0])}
                     style={styles.input}
                 />
+                {uploadProgress > 0 && (
+                    <div>Uploading Video: {uploadProgress}%</div>
+                )}
                 <button type="submit" style={styles.button}>Upload</button>
             </form>
 
@@ -142,7 +173,6 @@ const AdminDashboard = () => {
                             videoUrl={movie.videoUrl}
                             onDeleted={removeMovieFromUI}
                         />
-
                     </div>
                 ))}
             </div>
