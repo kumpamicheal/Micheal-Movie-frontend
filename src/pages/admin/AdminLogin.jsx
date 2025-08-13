@@ -26,6 +26,7 @@ const AdminLogin = () => {
 
             if (token) {
                 const decoded = jwtDecode(token);
+                localStorage.setItem('token', token);
                 localStorage.setItem('admin', JSON.stringify({ token, user: decoded }));
                 navigate('/admin/dashboard');
             } else {
