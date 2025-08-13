@@ -16,7 +16,7 @@ export async function uploadVideoToCloudinary(file, onProgress) {
 
         // 2️⃣ Request signed upload parameters from backend
         const signRes = await axios.get(`${API_BASE_URL}/cloudinary/sign`, {
-            params: { folder: "movies", resource_type: "video" },
+            params: { folder: "movies" }, // ✅ backend will auto-use video type
             headers: { Authorization: `Bearer ${token}` }
         });
 
