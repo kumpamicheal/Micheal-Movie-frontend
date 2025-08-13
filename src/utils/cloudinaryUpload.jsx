@@ -29,6 +29,8 @@ export async function uploadVideoToCloudinary(file, onProgress) {
         formData.append("timestamp", timestamp);
         formData.append("signature", signature);
         formData.append("api_key", api_key);
+        formData.append("resource_type", resource_type);
+
 
         // 4️⃣ Upload directly to Cloudinary
         const uploadRes = await axios.post(
