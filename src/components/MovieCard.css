@@ -52,3 +52,20 @@
     border: 1px solid #fff;
     background: linear-gradient(135deg, #222, #444);
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .movie-card {
+        min-width: 140px;
+        padding: 12px;
+    }
+    .movie-card img {
+        height: 200px;
+    }
+    .movie-card h4 {
+        font-size: 0.9rem;
+    }
+    .movie-card p {
+        font-size: 0.8rem;
+    }
+}
