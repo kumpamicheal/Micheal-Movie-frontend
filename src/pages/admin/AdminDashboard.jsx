@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../../services/api';
 import DeleteMovieButton from '../../components/DeleteMovieButton';
+import { uploadVideoToCloudinary } from "../../utils/cloudinaryUpload";
+
 
 const AdminDashboard = () => {
     const [title, setTitle] = useState('');
@@ -48,60 +50,31 @@ const AdminDashboard = () => {
             const posterJson = await posterRes.json();
             if (posterJson.error) throw new Error(posterJson.error.message);
 
-            // ✅ 2. Request signed params for video from backend
-            const folder = 'movies';
-            const resource_type = 'video';
-            const videoSignRes = await api.get('/cloudinary/sign', {
-                params: { folder, resource_type }
+            // ✅ 2. Upload video (signed) with progress tracking
+            const videoUrl = await uploadVideoToCloudinary(video, (percent) => {
+                setUploadProgress(percent);
             });
 
-            const { signature, timestamp, api_key, cloud_name, folder: signedFolder } = videoSignRes.data;
-
-            // ✅ 3. Upload video with progress tracking
-            const videoData = new FormData();
-            videoData.append('file', video);
-            videoData.append('folder', signedFolder);
-            videoData.append('timestamp', timestamp);
-            videoData.append('signature', signature);
-            videoData.append('api_key', api_key);
-
-            await new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", `https://api.cloudinary.com/v1_1/${cloud_name}/${resource_type}/upload`);
-                xhr.upload.addEventListener("progress", (e) => {
-                    if (e.lengthComputable) {
-                        setUploadProgress(Math.round((e.loaded * 100) / e.total));
-                    }
-                });
-                xhr.onload = () => {
-                    const res = JSON.parse(xhr.responseText);
-                    if (res.error) reject(new Error(res.error.message));
-                    else resolve(res);
-                };
-                xhr.onerror = () => reject(new Error('Video upload failed'));
-                xhr.send(videoData);
-            }).then(async (videoJson) => {
-                // ✅ 4. Save to backend
-                await api.post('/movies', {
-                    title,
-                    genre,
-                    posterUrl: posterJson.secure_url,
-                    videoUrl: videoJson.secure_url
-                });
-
-                alert('Upload successful!');
-                setTitle('');
-                setGenre('');
-                setPoster(null);
-                setVideo(null);
-                setUploadProgress(0);
-
-                // Reset file inputs
-                if (posterInputRef.current) posterInputRef.current.value = "";
-                if (videoInputRef.current) videoInputRef.current.value = "";
-
-                fetchMovies();
+            // ✅ 3. Save to backend
+            await api.post('/movies', {
+                title,
+                genre,
+                posterUrl: posterJson.secure_url,
+                videoUrl
             });
+
+            alert('Upload successful!');
+            setTitle('');
+            setGenre('');
+            setPoster(null);
+            setVideo(null);
+            setUploadProgress(0);
+
+            // Reset file inputs
+            if (posterInputRef.current) posterInputRef.current.value = "";
+            if (videoInputRef.current) videoInputRef.current.value = "";
+
+            fetchMovies();
 
         } catch (err) {
             console.error('Upload failed:', err);
