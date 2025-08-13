@@ -27,7 +27,7 @@ const SearchResults = () => {
 
             try {
                 // ✅ Match backend: use title param instead of query
-                const res = await api.get(`/movies/search?title=${encodeURIComponent(query)}`);
+                const res = await api.get(`/movies/search?query=${encodeURIComponent(query)}`);
                 console.log('Search API response:', res.data);
 
                 // ✅ The backend returns plain array, not { movies: [...] }
