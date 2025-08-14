@@ -1,46 +1,62 @@
-import axios from "axios";
+// uploadMediaToCloudinary.jsx
+import axios from 'axios';
+import api from './api'; // your axios instance pointing to backend
 
-const API_BASE_URL = "https://micheal-movie-backend.onrender.com/api";
+/**
+ * Upload poster and video to Cloudinary simultaneously
+ * @param {File} posterFile
+ * @param {File} videoFile
+ * @param {function} onProgress - callback receives { poster: 0-100, video: 0-100 }
+ * @returns {Promise<{posterURL: string, videoURL: string}>}
+ */
+export const uploadMediaToCloudinary = async (posterFile, videoFile, onProgress) => {
+    if (!posterFile && !videoFile) throw new Error('No files to upload');
 
-export async function uploadVideoToCloudinary(file, onProgress) {
-    try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("No admin token found. Please log in again.");
+    // 1️⃣ Request signed data for poster
+    const posterSignRes = posterFile
+        ? await api.get('/cloudinary/sign', { params: { folder: 'posters', resource_type: 'image' } })
+        : null;
 
-        // 1️⃣ Get signed params
-        const signRes = await axios.get(`${API_BASE_URL}/cloudinary/sign`, {
-            params: { folder: "movies" },
-            headers: { Authorization: `Bearer ${token}` }
-        });
+    // 2️⃣ Request signed data for video
+    const videoSignRes = videoFile
+        ? await api.get('/cloudinary/sign', { params: { folder: 'videos', resource_type: 'video' } })
+        : null;
 
-        const { timestamp, signature, api_key, cloud_name, folder, resource_type } = signRes.data;
+    // Helper function to upload one file
+    const uploadFile = async (file, signData) => {
+        if (!file || !signData) return null;
 
-        // 2️⃣ Build formData (NO resource_type here)
         const formData = new FormData();
-        formData.append("file", file);
-        formData.append("folder", folder);
-        formData.append("timestamp", timestamp);
-        formData.append("signature", signature);
-        formData.append("api_key", api_key);
+        formData.append('file', file);
+        formData.append('api_key', signData.api_key);
+        formData.append('timestamp', signData.timestamp);
+        formData.append('signature', signData.signature);
+        formData.append('folder', signData.folder);
 
-        // 3️⃣ Upload
-        const uploadRes = await axios.post(
-            `https://api.cloudinary.com/v1_1/${cloud_name}/${resource_type}/upload`,
+        // Include resource_type (required for video)
+        formData.append('resource_type', signData.resource_type);
+
+        const res = await axios.post(
+            `https://api.cloudinary.com/v1_1/${signData.cloud_name}/${signData.resource_type}/upload`,
             formData,
             {
-                onUploadProgress: (e) => {
-                    if (onProgress && e.total) {
-                        onProgress(Math.round((e.loaded * 100) / e.total));
+                headers: { 'Content-Type': 'multipart/form-data' },
+                onUploadProgress: (progressEvent) => {
+                    if (onProgress) {
+                        const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                        onProgress({ [signData.resource_type]: percent });
                     }
                 },
-                timeout: 0
             }
         );
+        return res.data.secure_url;
+    };
 
-        return uploadRes.data.secure_url;
+    // 3️⃣ Upload both files in parallel
+    const [posterURL, videoURL] = await Promise.all([
+        uploadFile(posterFile, posterSignRes?.data),
+        uploadFile(videoFile, videoSignRes?.data),
+    ]);
 
-    } catch (err) {
-        console.error("❌ Video upload failed:", err.response?.data || err.message);
-        throw err;
-    }
-}
+    return { posterURL, videoURL };
+};

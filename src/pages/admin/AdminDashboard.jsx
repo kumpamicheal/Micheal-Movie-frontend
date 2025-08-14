@@ -2,9 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../../services/api';
 import DeleteMovieButton from '../../components/DeleteMovieButton';
-import { uploadVideoToCloudinary } from "../../utils/cloudinaryUpload";
-import { uploadPosterToCloudinary } from "../../utils/uploadPosterToCloudinary";
-
+import { uploadMediaToCloudinary } from "../../utils/cloudinaryUpload"; // ✅ updated import
 
 const AdminDashboard = () => {
     const [title, setTitle] = useState('');
@@ -12,9 +10,8 @@ const AdminDashboard = () => {
     const [poster, setPoster] = useState(null);
     const [video, setVideo] = useState(null);
     const [movies, setMovies] = useState([]);
-    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadProgress, setUploadProgress] = useState({ poster: 0, video: 0 });
 
-    // Refs to reset file inputs
     const posterInputRef = useRef(null);
     const videoInputRef = useRef(null);
 
@@ -39,33 +36,19 @@ const AdminDashboard = () => {
         }
 
         try {
-            // ✅ 1. Upload poster (unsigned)
-            //const posterData = new FormData();
-           // posterData.append('file', poster);
-           // posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+            // ✅ Upload poster + video together with progress tracking
+            const { posterURL, videoURL } = await uploadMediaToCloudinary(
+                poster,
+                video,
+                (progress) => setUploadProgress((prev) => ({ ...prev, ...progress }))
+            );
 
-           // const posterRes = await fetch(
-                //`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
-              //  { method: 'POST', body: posterData }
-          //  );
-          //  const posterJson = await posterRes.json();
-           // if (posterJson.error) throw new Error(posterJson.error.message);
-// ✅ Upload poster (signed)
-            const posterUrl = await uploadPosterToCloudinary(poster, (percent) => {
-                console.log(`Poster Upload: ${percent}%`);
-            });
-
-            // ✅ 2. Upload video (signed) with progress tracking
-            const videoUrl = await uploadVideoToCloudinary(video, (percent) => {
-                setUploadProgress(percent);
-            });
-
-            // ✅ 3. Save to backend
+            // ✅ Save to backend
             await api.post('/movies', {
                 title,
                 genre,
-                posterUrl,
-                videoUrl
+                posterUrl: posterURL,
+                videoUrl: videoURL
             });
 
             alert('Upload successful!');
@@ -73,18 +56,16 @@ const AdminDashboard = () => {
             setGenre('');
             setPoster(null);
             setVideo(null);
-            setUploadProgress(0);
+            setUploadProgress({ poster: 0, video: 0 });
 
-            // Reset file inputs
             if (posterInputRef.current) posterInputRef.current.value = "";
             if (videoInputRef.current) videoInputRef.current.value = "";
 
             fetchMovies();
-
         } catch (err) {
             console.error('Upload failed:', err);
             alert('Upload failed: ' + err.message);
-            setUploadProgress(0);
+            setUploadProgress({ poster: 0, video: 0 });
         }
     };
 
@@ -126,9 +107,8 @@ const AdminDashboard = () => {
                     onChange={(e) => setVideo(e.target.files[0])}
                     style={styles.input}
                 />
-                {uploadProgress > 0 && (
-                    <div>Uploading Video: {uploadProgress}%</div>
-                )}
+                {uploadProgress.poster > 0 && <div>Uploading Poster: {uploadProgress.poster}%</div>}
+                {uploadProgress.video > 0 && <div>Uploading Video: {uploadProgress.video}%</div>}
                 <button type="submit" style={styles.button}>Upload</button>
             </form>
 
