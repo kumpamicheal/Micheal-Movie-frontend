@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import api from '../../services/api';
 import DeleteMovieButton from '../../components/DeleteMovieButton';
 import { uploadVideoToCloudinary } from "../../utils/cloudinaryUpload";
+import { uploadPosterToCloudinary } from "../../utils/uploadPosterToCloudinary";
 
 
 const AdminDashboard = () => {
@@ -39,16 +40,20 @@ const AdminDashboard = () => {
 
         try {
             // ✅ 1. Upload poster (unsigned)
-            const posterData = new FormData();
-            posterData.append('file', poster);
-            posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+            //const posterData = new FormData();
+           // posterData.append('file', poster);
+           // posterData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
 
-            const posterRes = await fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                { method: 'POST', body: posterData }
-            );
-            const posterJson = await posterRes.json();
-            if (posterJson.error) throw new Error(posterJson.error.message);
+           // const posterRes = await fetch(
+                //`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+              //  { method: 'POST', body: posterData }
+          //  );
+          //  const posterJson = await posterRes.json();
+           // if (posterJson.error) throw new Error(posterJson.error.message);
+// ✅ Upload poster (signed)
+            const posterUrl = await uploadPosterToCloudinary(poster, (percent) => {
+                console.log(`Poster Upload: ${percent}%`);
+            });
 
             // ✅ 2. Upload video (signed) with progress tracking
             const videoUrl = await uploadVideoToCloudinary(video, (percent) => {
@@ -59,7 +64,7 @@ const AdminDashboard = () => {
             await api.post('/movies', {
                 title,
                 genre,
-                posterUrl: posterJson.secure_url,
+                posterUrl,
                 videoUrl
             });
 
