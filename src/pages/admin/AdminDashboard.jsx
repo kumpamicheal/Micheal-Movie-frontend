@@ -40,8 +40,11 @@ const AdminDashboard = () => {
             const { posterURL, videoURL } = await uploadMediaToCloudinary(
                 poster,
                 video,
+                title,
+                genre,
                 (progress) => setUploadProgress((prev) => ({ ...prev, ...progress }))
             );
+
 
             // ✅ Save to backend
             await api.post('/movies', {

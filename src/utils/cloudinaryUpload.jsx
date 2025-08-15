@@ -4,11 +4,13 @@ import api from "../services/api";
 /**
  * Uploads poster and video to backend (/upload-movie)
  * and returns the URLs.
- * @param {File} posterFile
- * @param {File} videoFile
+ * @param {File} posterFile - Poster image file
+ * @param {File} videoFile - Video file
+ * @param {string} title - Movie title
+ * @param {string} genre - Movie genre
  * @param {function} onProgress - optional callback for video progress (0-100)
  */
-export const uploadMediaToCloudinary = async (posterFile, videoFile, onProgress) => {
+export const uploadMediaToCloudinary = async (posterFile, videoFile, title, genre, onProgress) => {
     try {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No auth token found");
@@ -16,6 +18,8 @@ export const uploadMediaToCloudinary = async (posterFile, videoFile, onProgress)
         const formData = new FormData();
         formData.append("poster", posterFile);
         formData.append("video", videoFile);
+        formData.append("title", title);   // added title
+        formData.append("genre", genre);   // added genre
 
         const response = await api.post("/cloudinary/upload-movie", formData, {
 
