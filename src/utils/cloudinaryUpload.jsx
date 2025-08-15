@@ -17,7 +17,8 @@ export const uploadMediaToCloudinary = async (posterFile, videoFile, onProgress)
         formData.append("poster", posterFile);
         formData.append("video", videoFile);
 
-        const response = await api.post("/upload-movie", formData, {
+        const response = await api.post("/cloudinary/upload-movie", formData, {
+
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`,
