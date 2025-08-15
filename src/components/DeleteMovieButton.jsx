@@ -1,19 +1,20 @@
-// DeleteMovieButton.jsx
 import React from "react";
 import api from "../services/api"; // ✅ use your configured Axios instance
 
-export default function DeleteMovieButton({ movieId, posterUrl, videoUrl, onDeleted }) {
+export default function DeleteMovieButton({ movieId, posterPublicId, videoPublicId, onDeleted }) {
     const handleDelete = async () => {
         if (!window.confirm("Are you sure you want to delete this movie?")) return;
 
         try {
             // ✅ Delete poster file
-            const posterPublicId = posterUrl.split('/').slice(-2).join('/').split('.')[0];
-            await api.post('/admin/delete-file', { public_id: posterPublicId });
+            if (posterPublicId) {
+                await api.post('/admin/delete-file', { public_id: posterPublicId });
+            }
 
             // ✅ Delete video file
-            const videoPublicId = videoUrl.split('/').slice(-2).join('/').split('.')[0];
-            await api.post('/admin/delete-file', { public_id: videoPublicId });
+            if (videoPublicId) {
+                await api.post('/admin/delete-file', { public_id: videoPublicId });
+            }
 
             // ✅ Delete movie record from DB
             await api.delete(`/movies/${movieId}`);
@@ -42,5 +43,4 @@ export default function DeleteMovieButton({ movieId, posterUrl, videoUrl, onDele
             Delete
         </button>
     );
-
 }
