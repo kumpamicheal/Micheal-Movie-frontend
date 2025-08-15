@@ -39,7 +39,9 @@ export const uploadMediaToCloudinary = async (posterFile, videoFile, title, genr
 
         return {
             posterURL: response.data.posterUrl,
+            posterPublicId: response.data.posterPublicId,
             videoURL: response.data.videoUrl,
+            videoPublicId: response.data.videoPublicId,
         };
     } catch (err) {
         console.error("Media upload failed:", err);

@@ -37,7 +37,7 @@ const AdminDashboard = () => {
 
         try {
             // ✅ Upload poster + video together with progress tracking
-            const { posterURL, videoURL } = await uploadMediaToCloudinary(
+            const { posterURL, posterPublicId, videoURL, videoPublicId } = await uploadMediaToCloudinary(
                 poster,
                 video,
                 title,
@@ -51,7 +51,9 @@ const AdminDashboard = () => {
                 title,
                 genre,
                 posterUrl: posterURL,
-                videoUrl: videoURL
+                posterPublicId,
+                videoUrl: videoURL,
+                videoPublicId
             });
 
             alert('Upload successful!');
@@ -130,8 +132,8 @@ const AdminDashboard = () => {
 
                         <DeleteMovieButton
                             movieId={movie._id}
-                            posterUrl={movie.posterUrl}
-                            videoUrl={movie.videoUrl}
+                            posterPublicId={movie.posterPublicId}
+                            videoPublicId={movie.videoPublicId}
                             onDeleted={removeMovieFromUI}
                         />
                     </div>
