@@ -11,6 +11,7 @@ const AdminDashboard = () => {
     const [video, setVideo] = useState(null);
     const [movies, setMovies] = useState([]);
     const [uploadProgress, setUploadProgress] = useState({ poster: 0, video: 0 });
+    const [isUploading, setIsUploading] = useState(false); // ✅ NEW
 
     const posterInputRef = useRef(null);
     const videoInputRef = useRef(null);
@@ -30,10 +31,18 @@ const AdminDashboard = () => {
 
     const handleUpload = async (e) => {
         e.preventDefault();
+
+        if (isUploading) {
+            console.log("Upload already in progress, ignoring duplicate.");
+            return;
+        }
+
         if (!title || !genre || !poster || !video) {
             alert('All fields are required including video');
             return;
         }
+
+        setIsUploading(true); // ✅ prevent multiple uploads
 
         try {
             // ✅ Upload poster + video together with progress tracking
@@ -44,7 +53,6 @@ const AdminDashboard = () => {
                 genre,
                 (progress) => setUploadProgress((prev) => ({ ...prev, ...progress }))
             );
-
 
             // ✅ Save to backend
             await api.post('/movies', {
@@ -71,6 +79,8 @@ const AdminDashboard = () => {
             console.error('Upload failed:', err);
             alert('Upload failed: ' + err.message);
             setUploadProgress({ poster: 0, video: 0 });
+        } finally {
+            setIsUploading(false); // ✅ unlock button after upload
         }
     };
 
@@ -114,7 +124,9 @@ const AdminDashboard = () => {
                 />
                 {uploadProgress.poster > 0 && <div>Uploading Poster: {uploadProgress.poster}%</div>}
                 {uploadProgress.video > 0 && <div>Uploading Video: {uploadProgress.video}%</div>}
-                <button type="submit" style={styles.button}>Upload</button>
+                <button type="submit" style={styles.button} disabled={isUploading}>
+                    {isUploading ? "Uploading..." : "Upload"}
+                </button>
             </form>
 
             {/* Uploaded Movies */}

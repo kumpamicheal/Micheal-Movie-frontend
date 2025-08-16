@@ -11,43 +11,19 @@ const MovieCard = ({ movie, sliderMatch }) => {
 
     return (
         <a href={linkToMovie} style={{ textDecoration: 'none' }}>
-            <div
-                className="movie-card"
-                style={{
-                    cursor: 'pointer',
-                    backgroundColor: '#2c2c2c',
-                    borderRadius: '8px',
-                    padding: '10px',
-                    display: 'flex',
-                    flexDirection: 'column', // stack image and title vertically
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    height: '320px', // slightly increased to make room for title
-                    width: '200px',
-                    overflow: 'hidden',
-                    position: 'relative',
-                }}
-            >
+            <div className="movie-card">
                 {posterUrl ? (
                     <img
                         src={posterUrl}
                         alt={title}
-                        style={{
-                            width: '100%',
-                            height: '260px', // fixed height for image
-                            objectFit: 'cover',
-                            borderRadius: '8px',
-                            marginBottom: '10px',
-                        }}
                     />
                 ) : (
                     <p style={{ color: '#fff', textAlign: 'center' }}>No poster available</p>
                 )}
-                <h4 style={{ color: '#fff', textAlign: 'center', fontSize: '16px' }}>{title}</h4>
+                <h4>{title}</h4>
             </div>
         </a>
     );
 };
-
 
 export default MovieCard;

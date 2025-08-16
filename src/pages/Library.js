@@ -1,6 +1,7 @@
 // src/pages/Library.js
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
+import './Library.css'; // Add this CSS file for grid & spinner styling
 
 const Library = () => {
     const [movies, setMovies] = useState([]);
@@ -14,8 +15,8 @@ const Library = () => {
                 setLoading(true);
                 const res = await api.get(`/movies/paginated?page=${page}&limit=8`);
                 console.log("Fetched movies:", res.data.movies); // Debug API response
-                setMovies(res.data.movies);
-                setTotalPages(res.data.totalPages);
+                setMovies(res.data.movies || []);
+                setTotalPages(res.data.totalPages || 1);
             } catch (error) {
                 console.error('Error fetching movies:', error);
             } finally {
@@ -30,37 +31,24 @@ const Library = () => {
         <div style={{ padding: '20px' }}>
             <h1>Movie Library</h1>
 
-            {loading && <p>Loading movies...</p>}
+            {loading && (
+                <div className="spinner-container">
+                    <div className="spinner"></div>
+                </div>
+            )}
 
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                    gap: '20px'
-                }}
-            >
+            <div className="movie-grid">
                 {movies.map((movie, idx) => {
                     try {
                         console.log("Rendering movie:", movie); // Debug each movie
-
                         return (
-                            <div
-                                key={movie._id || idx}
-                                style={{
-                                    border: '1px solid #ccc',
-                                    borderRadius: '8px',
-                                    padding: '10px',
-                                    textAlign: 'center'
-                                }}
-                            >
+                            <div key={movie._id || idx} className="movie-card">
                                 {movie.posterUrl && (
                                     <img
                                         src={String(movie.posterUrl)}
                                         alt={String(movie.title || 'Movie Poster')}
-                                        style={{ width: '100%', borderRadius: '8px' }}
                                     />
                                 )}
-
                                 <h3>{String(movie.title || '')}</h3>
                                 <p>{String(movie.genre || '')}</p>
                             </div>

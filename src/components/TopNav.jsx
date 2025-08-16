@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './TopNav.css';
 
-const genres = ['Horror', 'Action', 'Comedy', 'Drama', 'Romance', 'Sci-Fi'];
+// ✅ Added extra genres to test horizontal scrolling
+const genres = ['Horror', 'Action', 'Comedy', 'Drama', 'Romance', 'Sci-Fi', 'Thriller', 'Adventure'];
 
 const TopNav = () => {
     const location = useLocation();
@@ -18,13 +19,14 @@ const TopNav = () => {
 
     return (
         <nav className="top-nav">
-            <div className="logo">FIMAX</div>
-            <ul className="nav-links">
+            {/* ✅ Added role="menubar" */}
+            <ul className="nav-links" role="menubar">
                 {genres.map((genre) => {
                     const path = `/genre/${genre.toLowerCase()}`;
                     const isActive = location.pathname === path;
                     return (
-                        <li key={genre}>
+                        // ✅ Added role="menuitem"
+                        <li key={genre} role="menuitem">
                             <Link to={path} className={isActive ? 'active' : ''}>
                                 {genre}
                             </Link>

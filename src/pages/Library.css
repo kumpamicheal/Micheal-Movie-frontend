@@ -1,3 +1,4 @@
+/* Spinner styling (unchanged from your original) */
 .spinner-container {
     display: flex;
     justify-content: center;
@@ -18,3 +19,39 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* ------------------ NEW ADDITIONS ------------------ */
+
+/* Grid for movie cards */
+.movie-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for larger screens */
+}
+
+.movie-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on small phones */
+    }
+}
+/* ------------------ END OF ADDITIONS ------------------ */

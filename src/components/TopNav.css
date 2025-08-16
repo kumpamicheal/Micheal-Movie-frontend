@@ -5,19 +5,23 @@
     height: 60px;
     background-color: #000;
     color: white;
+
     display: flex;
     align-items: center;
-    padding: 0 30px;
+    justify-content: space-between; /* properly space nav-links and search */
+    padding: 10px 20px; /* reduced horizontal padding */
+
     z-index: 999;
 }
 
-.logo {
+/*Remove .logo styles if logo is removed */
+/* .logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #00ff00; /* flakes green */
-    margin-right: 40px;
+    color: #00ff00;  flakes green
+    margin-right: 40px;  not needed anymore
     cursor: default;
-}
+} */
 
 .nav-links {
     list-style: none;
@@ -25,6 +29,16 @@
     gap: 25px;
     margin: 0;
     padding: 0;
+
+    /* make nav-links horizontally scrollable on small screens */
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.nav-links::-webkit-scrollbar {
+    /* hide horizontal scrollbar */
+    display: none;
 }
 
 .nav-links li a {
@@ -34,6 +48,9 @@
     padding-bottom: 5px;
     border-bottom: 3px solid transparent;
     transition: border-color 0.3s, color 0.3s;
+
+    /* prevent wrapping of text in nav items */
+    white-space: nowrap;
 }
 
 .nav-links li a:hover,
@@ -56,6 +73,10 @@
     color: white;
     border: 1px solid #555;
     transition: border 0.3s ease;
+
+    /* ✅ NEW: limit width so it doesn’t take too much space */
+    max-width: 180px;
+    width: 100%;
 }
 
 .search-input::placeholder {
@@ -64,4 +85,11 @@
 
 .search-input:focus {
     border-color: #00ff00;
+}
+
+/* OPTIONAL: hide search box on very small screens to save space */
+@media (max-width: 400px) {
+    .search-container {
+        display: none;
+    }
 }

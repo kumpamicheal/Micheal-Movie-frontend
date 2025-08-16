@@ -20,7 +20,7 @@
 /* Poster image inside movie card */
 .movie-card img {
     width: 100%;
-    height: 260px; /* fixed height for poster */
+    height: 120px; /* ✅ reduced height so 4 fit per row */
     object-fit: cover;
     border-radius: 6px;
     margin-bottom: 12px;
@@ -53,6 +53,13 @@
     background: linear-gradient(135deg, #222, #444);
 }
 
+/* ✅ New grid wrapper for 4 per row */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* always 4 per row */
+    gap: 10px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .movie-card {
@@ -60,7 +67,7 @@
         padding: 12px;
     }
     .movie-card img {
-        height: 200px;
+        height: 120px; /* ✅ keep same smaller height on mobile */
     }
     .movie-card h4 {
         font-size: 0.9rem;
