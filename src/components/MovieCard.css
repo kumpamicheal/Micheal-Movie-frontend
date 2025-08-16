@@ -1,12 +1,10 @@
 .movie-card {
     min-width: 180px;
-    background-color: #222;
-    padding: 16px;
+    padding: 0; /* removed padding around image */
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     user-select: none;
-    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
     scroll-snap-align: start;
     flex-shrink: 0;
     display: flex;
@@ -15,24 +13,30 @@
     align-items: center;
     text-align: center;
     height: auto; /* allow height to grow based on content */
+    background-color: transparent; /* removed black background */
+    box-shadow: none; /* remove harsh shadow */
 }
 
 /* Poster image inside movie card */
 .movie-card img {
     width: 100%;
-    height: 120px; /* ✅ reduced height so 4 fit per row */
+    height: 120px; /* reduced height so 4 fit per row */
     object-fit: cover;
     border-radius: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 8px; /* slightly smaller margin */
+    border: none; /* remove any border */
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1); /* subtle shadow for depth */
 }
 
 /* Title below image */
 .movie-card h4 {
-    color: #f3f8f1;
-    margin: 0;
+    color: #111; /* deep black title */
+    font-family: 'Roboto', 'Arial', sans-serif; /* professional font */
+    font-weight: 700;
     font-size: 1rem;
-    font-weight: 600;
     line-height: 1.2;
+    margin: 8px 0 0 0;
+    text-align: center;
 }
 
 /* Optional: description or genre */
@@ -47,13 +51,13 @@
 }
 
 .movie-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-    border: 1px solid #fff;
-    background: linear-gradient(135deg, #222, #444);
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
+    border: none;
+    background: transparent;
 }
 
-/* ✅ New grid wrapper for 4 per row */
+/* Grid wrapper for 4 per row */
 .movies-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* always 4 per row */
@@ -64,10 +68,9 @@
 @media (max-width: 768px) {
     .movie-card {
         min-width: 140px;
-        padding: 12px;
     }
     .movie-card img {
-        height: 120px; /* ✅ keep same smaller height on mobile */
+        height: 120px; /* keep same smaller height on mobile */
     }
     .movie-card h4 {
         font-size: 0.9rem;

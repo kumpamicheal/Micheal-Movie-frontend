@@ -38,3 +38,133 @@
     transform: rotate(360deg);
   }
 }
+
+/* ------------------ MOBILE & TABLET TWEAKS ------------------ */
+
+/* Movie grid */
+.movie-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, 1fr); /* default desktop */
+}
+
+.movie-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Genre sections */
+.genre-section {
+  margin-bottom: 25px;
+}
+
+.genre-heading {
+  font-size: 1.8rem;
+  margin: 0;
+  color: #007bff;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.genre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+/* Buttons */
+.genre-link {
+  color: #fff;
+  text-decoration: none;
+  background-color: #333;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.genre-link:hover {
+  background-color: #ffd700;
+  color: #111;
+}
+
+/* Horizontal scroll for movies */
+.movie-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding-bottom: 4px;
+  scroll-snap-type: x mandatory;
+}
+
+.movie-row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.movie-row::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.movie-row::-webkit-scrollbar-track {
+  background: #222;
+}
+
+/* View all button */
+.view-all-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.view-all-btn:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* ------------------ RESPONSIVE MOBILE / TABLET ------------------ */
+@media (max-width: 768px) {
+  .movie-grid {
+    grid-template-columns: repeat(2, 1fr); /* tablets / larger phones */
+  }
+}
+
+@media (max-width: 480px) {
+  /* Movie grid still 2 columns on small phones */
+  .movie-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Genre headings smaller */
+  .genre-heading {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+
+  .genre-header {
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+  }
+
+  /* Buttons smaller */
+  .genre-link {
+    padding: 3px 10px;
+    font-size: 0.85rem;
+  }
+}
+/* ------------------ END OF MOBILE / TABLET ADDITIONS ------------------ */

@@ -2,7 +2,7 @@
     color: #fff;
     text-decoration: none;
     background-color: #333;
-    padding: 8px 12px;
+    padding: 8px 12px; /* default padding */
     border-radius: 4px;
     transition: background 0.3s;
 }
@@ -11,3 +11,12 @@
     background-color: #ffd700;
     color: #111;
 }
+
+/* ------------------ NEW ADDITION ------------------ */
+@media (max-width: 480px) {
+    .genre-link {
+        padding: 3px 10px; /* smaller on phones */
+        font-size: 0.85rem; /* slightly smaller font on mobile */
+    }
+}
+/* ------------------ END OF ADDITION ------------------ */
