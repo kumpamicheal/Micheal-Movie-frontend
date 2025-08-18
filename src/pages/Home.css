@@ -1,7 +1,8 @@
 /* src/pages/Home.css */
 
 .home {
-    width: 100%;          /* stretch full width */
+    width: 100vw;         /* stretch full viewport width */
+    max-width: none;      /* prevent auto-centering caps */
     margin: 0;            /* no auto-center */
     padding: 20px;
     text-align: left;     /* left align by default */
@@ -13,7 +14,8 @@
     margin-top: 300px; /* same as header height */
 }
 
-.movie-grid {
+.movie-grid,
+.movies-grid {           /* support both class names */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
