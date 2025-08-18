@@ -1,5 +1,6 @@
 .genre-section {
     margin-bottom: 25px;
+    width: 100%;
 }
 
 .genre-heading {
@@ -15,8 +16,8 @@
 .movie-row {
     display: flex;
     overflow-x: auto;
-    gap: 16px;
-    padding-bottom: 4px;
+    gap: 8px;
+    padding: 0 10px 4px 10px;
     scroll-snap-type: x mandatory;
 }
 
@@ -41,6 +42,7 @@
     border-bottom: 3px solid #007bff; /* underline spans the whole row */
     padding-bottom: 8px;
     margin-bottom: 16px;
+    width: 100%;
 }
 
 .view-all-btn {
@@ -69,5 +71,11 @@
         margin-bottom: 12px; /* reduce gap below header on mobile */
         padding-bottom: 6px; /* slightly smaller padding */
     }
+
+    .genre-row {
+        gap: 6px; /* reduce spacing on small screens */
+        padding: 0 5px; /* small horizontal padding to align with screen edges */
+    }
+
 }
 /* ------------------ END OF ADDITIONS ------------------ */
