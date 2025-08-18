@@ -20,3 +20,18 @@
     }
 }
 /* ------------------ END OF ADDITION ------------------ */
+
+/* ------------------ HEADER IMAGE HEIGHT ADJUSTMENT ------------------ */
+.header img {
+    width: 100%;
+    height: 180px; /* reduced height for shorter header */
+    object-fit: cover; /* maintain aspect ratio while filling container */
+}
+
+/* Responsive adjustment for smaller screens */
+@media (max-width: 768px) {
+    .header img {
+        height: 140px; /* even shorter on tablets/mobiles */
+    }
+}
+/* ------------------ END OF HEADER IMAGE ADJUSTMENT ------------------ */
