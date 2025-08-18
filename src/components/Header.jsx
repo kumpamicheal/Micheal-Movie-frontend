@@ -54,7 +54,7 @@ export default function Header() {
     }, [images.length]);
 
     return (
-        <header style={{ width: '200%', height: '50px', overflow: 'hidden' }}>
+        <header style={{ width: '250%', height: '90px', overflow: 'hidden' }}>
             <Swiper
                 onSwiper={(swiper) => { swiperRef.current = swiper; }}
                 modules={[Autoplay]}
@@ -69,8 +69,8 @@ export default function Header() {
                             src={imgPath}
                             alt={`Slide ${index + 1}`}
                             style={{
-                                width: '200%',
-                                height: '50px',
+                                width: '250%',
+                                height: '90px',
                                 objectFit: 'cover',
                                 display: 'block',
                             }}
