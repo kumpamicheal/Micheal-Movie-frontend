@@ -43,6 +43,11 @@
     border-radius: 0 0 6px 6px; /* rounded corners only at bottom */
     text-align: center;     /* center the text */
     box-sizing: border-box; /* ensures padding doesn’t overflow */
+
+    /* NEW: wrapping and breaking long words */
+    word-wrap: break-word;   /* allow long words to break */
+    overflow-wrap: break-word;
+
 }
 
 
