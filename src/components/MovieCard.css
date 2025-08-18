@@ -28,20 +28,23 @@
 
 /* Title below image */
 .movie-card h4 {
-    color: #111; /* text remains black */
+    color: #111; /* black text */
     font-family: 'Roboto', 'Arial', sans-serif;
     font-weight: 700;
     font-size: 1rem;
     line-height: 1.2;
     margin: 8px 0 0 0;
-    text-align: center;
 
-    /* NEW STYLING */
-    background-color: #fff;      /* white background */
-    padding: 4px 8px;            /* space around the text */
-    border-radius: 4px;           /* rounded corners */
-    display: inline-block;        /* shrink-wrap around text */
+    /* Full-width title bar */
+    display: block;         /* spans full width */
+    width: 100%;            /* matches image width */
+    background-color: #fff; /* white background */
+    padding: 6px 0;         /* vertical padding, no horizontal shrink */
+    border-radius: 0 0 6px 6px; /* rounded corners only at bottom */
+    text-align: center;     /* center the text */
+    box-sizing: border-box; /* ensures padding doesn’t overflow */
 }
+
 
 /* Optional: description or genre */
 .movie-card p {
