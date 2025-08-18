@@ -42,7 +42,7 @@ const Library = () => {
                     try {
                         console.log("Rendering movie:", movie); // Debug each movie
                         return (
-                            <div key={movie._id || idx} className="movie-card">
+                            <div key={movie._id || idx} className="library-movie-card">
                                 {movie.posterUrl && (
                                     <img
                                         src={String(movie.posterUrl)}
