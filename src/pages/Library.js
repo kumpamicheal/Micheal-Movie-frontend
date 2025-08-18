@@ -42,8 +42,15 @@ const Library = () => {
                     try {
                         console.log("Rendering movie:", movie); // Debug each movie
                         return (
-                            <div key={movie._id || idx}>
-                                {/* Movie card rendering removed */}
+                            <div key={movie._id || idx} className="movie-card">
+                                {movie.posterUrl && (
+                                    <img
+                                        src={String(movie.posterUrl)}
+                                        alt={String(movie.title || 'Movie Poster')}
+                                    />
+                                )}
+                                <h3>{String(movie.title || '')}</h3>
+                                <p>{String(movie.genre || '')}</p>
                             </div>
                         );
                     } catch (err) {
