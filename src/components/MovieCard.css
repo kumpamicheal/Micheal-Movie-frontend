@@ -1,6 +1,6 @@
 .movie-card {
-    min-width: 140px;
-    flex: 0 0 140px;       /* fixed width for uniformity */
+    width: 140px;            /* NEW: fixed width for uniformity */
+    min-width: 140px;        /* NEW: ensure min width */
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
@@ -17,7 +17,8 @@
 
 .movie-card img {
     width: 100%;
-    height: 120px;
+    height: auto;           /* scale naturally */
+    max-height: 120px;      /* cap height on desktop */
     object-fit: cover;
     border-radius: 6px 6px 0 0; /* rounded top corners only */
     margin: 0; /* remove bottom margin */
@@ -78,16 +79,16 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .movie-card {
-        min-width: 120px;       /* reduced from 140px for mobile */
-        flex: 0 0 120px;        /* reduced width for mobile */
+        width: 120px;        /* NEW: reduced width for mobile */
+        min-width: 120px;    /* NEW: min width for mobile */
     }
     .movie-card img {
-        height: 100px;          /* slightly smaller image for mobile */
+        max-height: 100px;   /* slightly smaller image for mobile */
     }
     .movie-card h4 {
-        font-size: 0.85rem;     /* slightly smaller text */
+        font-size: 0.85rem;  /* slightly smaller text */
     }
     .movie-card p {
-        font-size: 0.75rem;     /* slightly smaller description text */
+        font-size: 0.75rem;  /* slightly smaller description text */
     }
 }
