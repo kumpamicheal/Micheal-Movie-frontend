@@ -1,4 +1,6 @@
 import React from 'react';
+import './MovieCard.css';
+
 
 const MovieCard = ({ movie, sliderMatch }) => {
     if (!movie || typeof movie !== 'object') return null;

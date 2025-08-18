@@ -1,0 +1,81 @@
+.movie-card {
+    min-width: 180px;
+    padding: 0; /* removed padding around image */
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    height: auto; /* allow height to grow based on content */
+    background-color: transparent; /* removed black background */
+    box-shadow: none; /* remove harsh shadow */
+}
+
+/* Poster image inside movie card */
+.movie-card img {
+    width: 100%;
+    height: 120px; /* reduced height so 4 fit per row */
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 8px; /* slightly smaller margin */
+    border: none; /* remove any border */
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1); /* subtle shadow for depth */
+}
+
+/* Title below image */
+.movie-card h4 {
+    color: #111; /* deep black title */
+    font-family: 'Roboto', 'Arial', sans-serif; /* professional font */
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+    margin: 8px 0 0 0;
+    text-align: center;
+}
+
+/* Optional: description or genre */
+.movie-card p {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    margin-top: 8px;
+    max-height: 3.9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
+    border: none;
+    background: transparent;
+}
+
+/* Grid wrapper for 4 per row */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* always 4 per row */
+    gap: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .movie-card {
+        min-width: 140px;
+    }
+    .movie-card img {
+        height: 120px; /* keep same smaller height on mobile */
+    }
+    .movie-card h4 {
+        font-size: 0.9rem;
+    }
+    .movie-card p {
+        font-size: 0.8rem;
+    }
+}
