@@ -1,7 +1,7 @@
 /* App.css - default from create-react-app */
 
 .App {
-  text-align: center;
+  text-align: left;   /* or just remove this rule */
 }
 
 .App-logo {
