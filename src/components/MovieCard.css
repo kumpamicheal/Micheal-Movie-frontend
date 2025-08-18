@@ -1,32 +1,30 @@
 .movie-card {
     min-width: 180px;
-    padding: 0; /* removed padding around image */
+    padding: 0;
     border-radius: 8px;
     cursor: pointer;
     user-select: none;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    scroll-snap-align: start;
-    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     text-align: center;
-    height: auto; /* allow height to grow based on content */
-    background-color: transparent; /* removed black background */
-    box-shadow: none; /* remove harsh shadow */
+    background-color: transparent;
+    box-shadow: none;
+    overflow: hidden; /* ADD THIS to clip anything spilling */
 }
 
-/* Poster image inside movie card */
 .movie-card img {
     width: 100%;
-    height: 120px; /* reduced height so 4 fit per row */
+    height: 120px;
     object-fit: cover;
     border-radius: 6px;
-    margin-bottom: 8px; /* slightly smaller margin */
-    border: none; /* remove any border */
+    margin: 0; /* remove bottom margin */
+    border: none;
     box-shadow: none;
+    display: block; /* remove inline-block gap issue */
 }
+
 
 /* Title below image */
 .movie-card h4 {
