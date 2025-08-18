@@ -20,6 +20,7 @@ const sliderImages = [
     '/img/13.jpg',
     '/img/14.jpg',
     '/img/15.jpg',
+
 ];
 
 function getRandomIndex(excludeIndex, length) {
@@ -33,29 +34,31 @@ function getRandomIndex(excludeIndex, length) {
 export default function Header() {
     const swiperRef = useRef(null);
 
+    // Shuffle once on mount (optional, you can keep sliderImages as is)
     const images = useMemo(() => sliderImages, []);
 
     React.useEffect(() => {
         if (!swiperRef.current) return;
 
+        // Every 3 seconds, pick a random slide index different from current
         const interval = setInterval(() => {
             const swiper = swiperRef.current;
             if (!swiper) return;
 
             const currentIndex = swiper.realIndex;
             const nextIndex = getRandomIndex(currentIndex, images.length);
-            swiper.slideToLoop(nextIndex);
+            swiper.slideToLoop(nextIndex); // slideToLoop handles looping indexes
         }, 3000);
 
         return () => clearInterval(interval);
     }, [images.length]);
 
     return (
-        <header className="header">
+        <header style={{ width: '100%', height: '200px', overflow: 'hidden' }}>
             <Swiper
                 onSwiper={(swiper) => { swiperRef.current = swiper; }}
                 modules={[Autoplay]}
-                autoplay={false}
+                autoplay={false} // disable swiper autoplay since we handle it manually
                 loop={true}
                 spaceBetween={0}
                 slidesPerView={1}
@@ -65,6 +68,12 @@ export default function Header() {
                         <img
                             src={imgPath}
                             alt={`Slide ${index + 1}`}
+                            style={{
+                                width: '100%',
+                                height: '200px',
+                                objectFit: 'cover',
+                                display: 'block',
+                            }}
                         />
                     </SwiperSlide>
                 ))}
