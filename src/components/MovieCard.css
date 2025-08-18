@@ -1,5 +1,6 @@
 .movie-card {
     min-width: 180px;
+    flex: 0 0 180px;       /* NEW: fixed width for uniformity */
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
@@ -9,22 +10,21 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background-color: transparent;
+    background-color: #fff; /* NEW: white background to remove black edges */
     box-shadow: none;
-    overflow: hidden; /* ADD THIS to clip anything spilling */
+    overflow: hidden; /* clip anything spilling */
 }
 
 .movie-card img {
     width: 100%;
     height: 120px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 6px 6px 0 0; /* rounded top corners only */
     margin: 0; /* remove bottom margin */
     border: none;
     box-shadow: none;
     display: block; /* remove inline-block gap issue */
 }
-
 
 /* Title below image */
 .movie-card h4 {
@@ -33,23 +33,21 @@
     font-weight: 700;
     font-size: 1rem;
     line-height: 1.2;
-    margin: 8px 0 0 0;
+    margin: 0; /* NEW: remove top margin to align with image */
 
     /* Full-width title bar */
-    display: block;         /* spans full width */
-    width: 100%;            /* matches image width */
-    background-color: #fff; /* white background */
-    padding: 6px 0;         /* vertical padding, no horizontal shrink */
-    border-radius: 0 0 6px 6px; /* rounded corners only at bottom */
-    text-align: center;     /* center the text */
-    box-sizing: border-box; /* ensures padding doesn’t overflow */
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    padding: 6px 0;
+    border-radius: 0 0 6px 6px;
+    text-align: center;
+    box-sizing: border-box;
 
-    /* NEW: wrapping and breaking long words */
-    word-wrap: break-word;   /* allow long words to break */
+    /* Wrapping long words */
+    word-wrap: break-word;
     overflow-wrap: break-word;
-
 }
-
 
 /* Optional: description or genre */
 .movie-card p {
@@ -71,15 +69,17 @@
 
 /* Grid wrapper for 4 per row */
 .movies-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* always 4 per row */
+    display: flex;           /* NEW: flex for horizontal scroll if needed */
     gap: 10px;
+    overflow-x: auto;        /* allow scrolling if more than fits */
+    padding: 10px 0;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .movie-card {
         min-width: 140px;
+        flex: 0 0 140px;     /* maintain fixed width on mobile */
     }
     .movie-card img {
         height: 120px; /* keep same smaller height on mobile */
