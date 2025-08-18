@@ -30,13 +30,19 @@
 
 /* Title below image */
 .movie-card h4 {
-    color: #111; /* deep black title */
-    font-family: 'Roboto', 'Arial', sans-serif; /* professional font */
+    color: #111; /* text remains black */
+    font-family: 'Roboto', 'Arial', sans-serif;
     font-weight: 700;
     font-size: 1rem;
     line-height: 1.2;
     margin: 8px 0 0 0;
     text-align: center;
+
+    /* NEW STYLING */
+    background-color: #fff;      /* white background */
+    padding: 4px 8px;            /* space around the text */
+    border-radius: 4px;           /* rounded corners */
+    display: inline-block;        /* shrink-wrap around text */
 }
 
 /* Optional: description or genre */
