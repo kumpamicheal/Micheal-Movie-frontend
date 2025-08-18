@@ -1,16 +1,16 @@
 /* src/pages/Home.css */
 
 .home {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;          /* stretch full width */
+    margin: 0;            /* no auto-center */
     padding: 20px;
-    text-align: center;
+    text-align: left;     /* left align by default */
     color: #ff8;
 }
 
 .home main {
     padding: 20px;
-    margin-top:300px; /* same as header height */
+    margin-top: 300px; /* same as header height */
 }
 
 .movie-grid {
@@ -34,6 +34,7 @@
 h1 {
     font-size: 2.5rem;
     margin-bottom: 30px;
+    text-align: center; /* keep only headings centered if needed */
 }
 
 /* Fallback movie poster */
