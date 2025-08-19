@@ -47,6 +47,7 @@
     align-items: center;
     border-bottom: 3px solid #007bff; /* underline spans the whole row */
     padding-bottom: 8px;
+    padding: 0 10px 8px 10px;
     margin-bottom: 16px;
     width: 100%;
 }
