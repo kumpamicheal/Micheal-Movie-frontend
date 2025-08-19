@@ -4,14 +4,14 @@
     width: 100vw;         /* stretch full viewport width */
     max-width: none;      /* prevent auto-centering caps */
     margin: 0;            /* no auto-center */
-    padding: 20px;
+    padding: 10px;
     text-align: left;     /* left align by default */
     color: #ff8;
 }
 
 .home main {
-    padding: 20px;
-    margin-top: 300px; /* same as header height */
+    padding: 10px;
+    margin-top: 250px; /* same as header height */
 }
 
 .movie-grid,
@@ -29,7 +29,7 @@
 
 /* Spacing between genre sections */
 .genre-section {
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 /* Header text styling */
