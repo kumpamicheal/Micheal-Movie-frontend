@@ -28,6 +28,7 @@
 }
 
 /* Title below image */
+/* Title below image */
 .movie-card h4 {
     color: #111; /* black text */
     font-family: 'Roboto', 'Arial', sans-serif;
@@ -36,20 +37,22 @@
     line-height: 1.2;
     margin: 0; /* remove top margin to align with image */
 
-    /* Full-width title bar */
+    /* Match image width */
     display: block;
-    width: 100%;
-    background-color: #fff;
-    padding: 6px 0;
+    width: 80%;          /* match the image width */
+    padding-left: 0;     /* remove extra left padding */
+    margin: 0 auto;      /* center the title under the image */
     border-radius: 0 0 6px 6px;
-    text-align: left;
-    padding-left: 6px;
     box-sizing: border-box;
+    text-align: center;  /* center text under the image */
 
     /* Wrapping long words */
     word-wrap: break-word;
     overflow-wrap: break-word;
+    background-color: #fff; /* keep white background */
+    padding: 6px 0;
 }
+
 
 /* Optional: description or genre */
 .movie-card p {
