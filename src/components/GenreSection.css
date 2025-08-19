@@ -12,6 +12,12 @@
     text-transform: uppercase;
 }
 
+.genre-section:first-of-type {
+    margin-top: 0; /* or a small value like 8px if you want a little breathing room */
+}
+
+
+
 /* Horizontal scroll container */
 .movie-row {
     display: flex;
