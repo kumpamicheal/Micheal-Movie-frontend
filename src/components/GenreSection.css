@@ -45,12 +45,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 3px solid #007bff; /* underline spans full width */
-    padding: 0; /* remove all padding */
-    margin-bottom: 16px; /* vertical spacing is fine */
-    width: 100%; /* full width of container */
-    box-sizing: border-box; /* ensures border is inside container width */
+    border-bottom: 3px solid #007bff;
+    padding: 0;
+    margin-bottom: 16px;
+    width: 100vw; /* full viewport width */
+    box-sizing: border-box;
 }
+
 
 .view-all-btn {
     background: none;
