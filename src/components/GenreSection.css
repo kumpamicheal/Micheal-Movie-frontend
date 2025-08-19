@@ -78,7 +78,7 @@
         padding-bottom: 6px; /* slightly smaller padding */
     }
 
-    .genre-row {
+    .movie-row {
         gap: 6px; /* reduce spacing on small screens */
         padding: 0 5px; /* small horizontal padding to align with screen edges */
     }
