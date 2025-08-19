@@ -43,19 +43,13 @@
 /* ===== View All row ===== */
 .genre-header {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    border-bottom: 3px solid #007bff;
-    padding: 0;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #007bff; /* underline spans the whole row */
+    padding-bottom: 8px;
     margin-bottom: 16px;
-    max-width: 1200px;   /* same as your container */
-    width: 100vw;          /* 100% of container */
-    margin-left: auto;    /* center horizontally */
-    margin-right: auto;
-    box-sizing: border-box;
+    width: 100%;
 }
-
-
 
 .view-all-btn {
     background: none;

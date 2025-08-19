@@ -51,9 +51,4 @@ h1 {
     color: #999;
     font-size: 1.2rem;
 }
-.container {
-    max-width: 1200px; /* match the width you used for header image */
-    margin: 0 auto;     /* center horizontally */
-    padding: 0;    /* small horizontal padding */
-    box-sizing: border-box;
-}
+
