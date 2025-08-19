@@ -48,9 +48,13 @@
     border-bottom: 3px solid #007bff;
     padding: 0;
     margin-bottom: 16px;
-    width: 100vw; /* full viewport width */
+    max-width: 1200px;   /* same as your container */
+    width: 100%;          /* 100% of container */
+    margin-left: auto;    /* center horizontally */
+    margin-right: auto;
     box-sizing: border-box;
 }
+
 
 
 .view-all-btn {
