@@ -16,6 +16,7 @@ const GenreSection = ({ genre, movies, sliderItems }) => {
 
     return (
         <section className="genre-section">
+            <div className="container">
             <div className="genre-header">
                 {/* Display genre name in uppercase */}
                 <h2 className="genre-heading">{genre.toUpperCase()}</h2>
@@ -43,6 +44,7 @@ const GenreSection = ({ genre, movies, sliderItems }) => {
                         />
                     );
                 })}
+            </div>
             </div>
         </section>
     );
