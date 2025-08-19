@@ -21,13 +21,13 @@
     max-height: 120px;      /* cap height on desktop */
     object-fit: cover;
     border-radius: 6px 6px 0 0; /* rounded top corners only */
-    margin: 0; /* remove bottom margin */
+    margin: 0 auto;
     border: none;
     box-shadow: none;
     display: block; /* remove inline-block gap issue */
 }
 
-/* Title below image */
+
 /* Title below image */
 .movie-card h4 {
     color: #111; /* black text */
