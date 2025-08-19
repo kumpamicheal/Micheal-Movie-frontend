@@ -43,7 +43,7 @@
 /* ===== View All row ===== */
 .genre-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     border-bottom: 3px solid #007bff;
     padding: 0;
