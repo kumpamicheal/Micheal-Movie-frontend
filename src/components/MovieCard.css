@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    background-color: #fff; /* white background to remove black edges */
+    background-color: red !important; /* white background to remove black edges */
     box-shadow: none;
     overflow: hidden; /* clip anything spilling */
 }
