@@ -81,14 +81,22 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+
+    .movies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        gap: 10px;
+    }
+
+
     .movie-card {
-        width: 60px;        /* narrower card width */
-        min-width: 60px;
+        width: 50px;        /* narrower card width */
+        min-width: 50px;
     }
     .movie-card img {
         width: 100%;        /* fill card width */
-        height: 140px;      /* taller poster height */
-        max-height: 140px;
+        height: 160px;      /* taller poster height */
+        max-height: 160px;
         object-fit: cover;  /* crop if needed */
     }
     .movie-card h4 {
