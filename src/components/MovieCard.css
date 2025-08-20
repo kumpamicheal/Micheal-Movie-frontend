@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    background-color: transparent;
+    background: green !important;
     box-shadow: none;
     overflow: hidden; /* clip anything spilling */
     border: 2px solid limegreen !important;
@@ -76,11 +76,6 @@
     gap: 10px;
     overflow-x: auto;        /* allow scrolling if more than fits */
     padding: 10px 0;
-}
-
-/* Force background check */
-body, .movies-grid {
-    background: white !important;
 }
 
 
