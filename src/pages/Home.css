@@ -12,6 +12,7 @@
 .home main {
     padding: 0px;
     margin-top: 250px; /* same as header height */
+    margin-bottom: 100px;
 }
 
 .movie-grid,

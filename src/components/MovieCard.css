@@ -18,7 +18,7 @@
 
 .movie-card img {
     width: 100%;        /* fill entire card width */
-    height: 120px;      /* force fixed height */
+    height: 110px;      /* force fixed height */
     object-fit: cover;  /* crop to remove black borders */
     border-radius: 6px 6px 0 0;
     display: block;
