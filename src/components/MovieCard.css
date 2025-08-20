@@ -82,20 +82,21 @@ body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .movie-card {
-        width: 100px;        /* smaller width for mobile */
-        min-width: 100px;    /* ensure minimum width */
+        width: 90px;        /* narrower card width */
+        min-width: 90px;
     }
     .movie-card img {
-        height: 80px;        /* smaller height for mobile posters */
-        max-height: 80px;
+        width: 100%;        /* fill card width */
+        height: 140px;      /* taller poster height */
+        max-height: 140px;
+        object-fit: cover;  /* crop if needed */
     }
     .movie-card h4 {
-        font-size: 0.75rem;  /* smaller title text */
-        line-height: 1;      /* tighter line spacing */
+        font-size: 0.75rem;
+        line-height: 1.1;
     }
     .movie-card p {
-        font-size: 0.65rem;  /* smaller description text */
-        line-height: 1;      /* tighter spacing */
+        font-size: 0.65rem;
+        line-height: 1;
     }
 }
-
