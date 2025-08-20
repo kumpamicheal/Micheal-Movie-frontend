@@ -1,6 +1,6 @@
 .movie-card {
-    width: 120px;            /* NEW: fixed width for uniformity */
-    min-width: 120px;        /* NEW: ensure min width */
+    width: 80px;            /* NEW: fixed width for uniformity */
+    min-width: 80px;        /* NEW: ensure min width */
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
