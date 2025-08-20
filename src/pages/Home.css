@@ -4,13 +4,14 @@
     width: 100vw;         /* stretch full viewport width */
     max-width: none;      /* prevent auto-centering caps */
     margin: 0;            /* no auto-center */
-    padding: 0px;
+    padding: 2px;
     text-align: left;     /* left align by default */
     color: #ff8;
+    background-color: #111;
 }
 
 .home main {
-    padding: 0px;
+    padding: 2px;
     margin-top: 250px; /* same as header height */
 }
 
