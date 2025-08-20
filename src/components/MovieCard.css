@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    background: green !important;
+    background: transparent;
     box-shadow: none;
     overflow: hidden; /* clip anything spilling */
     border: 2px solid limegreen !important;
@@ -22,7 +22,7 @@
     max-height: 120px;      /* cap height on desktop */
     object-fit: cover;
     border-radius: 6px 6px 0 0; /* rounded top corners only */
-    margin: 0; /* remove bottom margin */
+    margin: 0 auto;
     border: none;
     box-shadow: none;
     display: block; /* remove inline-block gap issue */
@@ -72,11 +72,17 @@
 
 /* Grid wrapper for 4 per row */
 .movies-grid {
+    background: white;
     display: flex;           /* flex for horizontal scroll if needed */
     gap: 10px;
     overflow-x: auto;        /* allow scrolling if more than fits */
     padding: 10px 0;
 }
+
+body {
+    background: white !important;
+}
+
 
 
 /* Responsive adjustments */
