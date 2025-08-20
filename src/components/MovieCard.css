@@ -1,25 +1,27 @@
 .movie-card {
-    display: inline-block;   /* shrink-wrap the content */
-    width: 85%;      /* automatically match content width */
-    text-align: center;
+    width: 140px;            /* NEW: fixed width for uniformity */
+    min-width: 140px;        /* NEW: ensure min width */
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
     user-select: none;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    background-color: #fff; /* white background to remove black edges */
     box-shadow: none;
-    overflow: hidden;
-    text-align: center;      /* center content inside card */
+    overflow: hidden; /* clip anything spilling */
 }
 
 .movie-card img {
-    width: 85%;
-    height: 150px;           /* scale naturally */
-    /*max-height: 180px;*/      /* cap height on desktop */
+    width: 80%;
+    height: auto;           /* scale naturally */
+    max-height: 120px;      /* cap height on desktop */
     object-fit: cover;
     border-radius: 6px 6px 0 0; /* rounded top corners only */
-    margin: 0 auto;
+    margin: 0; /* remove bottom margin */
     border: none;
     box-shadow: none;
     display: block; /* remove inline-block gap issue */
@@ -27,29 +29,27 @@
 
 /* Title below image */
 .movie-card h4 {
-    color: #282c3422; /* black text */
+    color: #111; /* black text */
     font-family: 'Roboto', 'Arial', sans-serif;
     font-weight: 700;
-    font-size: 0.75rem;  /* 🔹 reduced from 1rem */
-    line-height: 1;   /* 🔹 tighter line spacing */
+    font-size: 1rem;
+    line-height: 1.2;
     margin: 0; /* remove top margin to align with image */
 
-    /* Match image width */
+    /* Full-width title bar */
     display: block;
-    width: 85%;          /* match the image width */
-    padding-left: 0;     /* remove extra left padding */
-    margin: 0 auto;      /* center the title under the image */
+    width: 80%;
+    background-color: #fff;
+    padding: 6px 0;
     border-radius: 0 0 6px 6px;
+    text-align: center;
+    padding-left: 6px;
     box-sizing: border-box;
-    text-align: center;  /* center text under the image */
 
     /* Wrapping long words */
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background-color: #999999; /* keep white background */
-    padding: 2px 0;
 }
-
 
 /* Optional: description or genre */
 .movie-card p {
@@ -64,14 +64,7 @@
 
 .movie-card:hover {
     transform: scale(1.02);
-
-    .movie-card:hover {
-        transform: scale(1.02);
-       /* box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
-        border: none;
-        background: transparent;
-    }
-
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
     border: none;
     background: transparent;
 }
@@ -94,8 +87,7 @@
         max-height: 100px;   /* slightly smaller image for mobile */
     }
     .movie-card h4 {
-        font-size: 0.75rem;
-        line-height: 1.1;
+        font-size: 0.85rem;  /* slightly smaller text */
     }
     .movie-card p {
         font-size: 0.75rem;  /* slightly smaller description text */

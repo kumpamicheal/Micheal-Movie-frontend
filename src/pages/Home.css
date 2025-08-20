@@ -7,12 +7,11 @@
     padding: 0px;
     text-align: left;     /* left align by default */
     color: #ff8;
-   /* background-color: #222; */
 }
 
 .home main {
     padding: 0px;
-    margin-top: 250px; /* same as header height
+    margin-top: 250px; /* same as header height */
 }
 
 .movie-grid,
