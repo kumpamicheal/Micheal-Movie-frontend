@@ -1,6 +1,14 @@
 /* src/pages/Home.css */
 
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 .home {
+    display: flex;
+    flex-direction: column;
     width: 100vw;         /* stretch full viewport width */
     max-width: none;      /* prevent auto-centering caps */
     margin: 0;            /* no auto-center */
@@ -13,6 +21,7 @@
 }
 
 .home main {
+    flex: 1;
     padding: 0px;
     margin-top: 50px; /* same as header height */
     margin-bottom: 50px;
