@@ -1,6 +1,6 @@
 .movie-card {
-    width: 80px;            /* NEW: fixed width for uniformity */
-    min-width: 80px;        /* NEW: ensure min width */
+    width: 100%;            /* NEW: fixed width for uniformity */
+   /* min-width: 80px;        /* NEW: ensure min width */
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
@@ -69,8 +69,9 @@
 /* Grid wrapper for 4 per row */
 .movies-grid {
     background: white;
-    display: flex;           /* flex for horizontal scroll if needed */
+    display: grid;           /* flex for horizontal scroll if needed */
     gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     overflow-x: auto;        /* allow scrolling if more than fits */
     padding: 10px 0;
 }
@@ -90,8 +91,8 @@ body {
 
 
     .movie-card {
-        width: 50px;        /* narrower card width */
-        min-width: 50px;
+        width: 100%;        /* narrower card width */
+      /*  min-width: 50px; */
     }
     .movie-card img {
         width: 100%;        /* fill card width */
