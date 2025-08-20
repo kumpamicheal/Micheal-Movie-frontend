@@ -15,8 +15,8 @@
 
 .movie-card img {
     width: 85%;
-    height: auto;           /* scale naturally */
-    max-height: 180px;      /* cap height on desktop */
+    height: 180px;           /* scale naturally */
+    /*max-height: 180px;*/      /* cap height on desktop */
     object-fit: cover;
     border-radius: 6px 6px 0 0; /* rounded top corners only */
     margin: 0 auto;
