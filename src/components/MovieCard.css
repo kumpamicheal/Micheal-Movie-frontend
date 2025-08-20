@@ -78,6 +78,12 @@
     padding: 10px 0;
 }
 
+/* Force background check */
+body, .movies-grid {
+    background: white !important;
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .movie-card {
