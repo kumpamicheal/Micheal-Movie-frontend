@@ -15,9 +15,9 @@
 
 .movie-card img {
     width: 85%;
-    height: auto;           /* scale naturally */
-    max-height: 120px;      /* cap height on desktop */
-    object-fit: cover;
+    height: 180px;           /* scale naturally */
+
+
     border-radius: 6px 6px 0 0; /* rounded top corners only */
     margin: 0 auto;
     border: none;
@@ -25,15 +25,13 @@
     display: block; /* remove inline-block gap issue */
 }
 
-
-/* Title below image */
 /* Title below image */
 .movie-card h4 {
     color: #282c3422; /* black text */
     font-family: 'Roboto', 'Arial', sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;  /* 🔹 reduced from 1rem */
-    line-height: 1.1;   /* 🔹 tighter line spacing */
+    font-size: 0.75rem;  /* 🔹 reduced from 1rem */
+    line-height: 1;   /* 🔹 tighter line spacing */
     margin: 0; /* remove top margin to align with image */
 
     /* Match image width */
