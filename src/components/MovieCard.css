@@ -67,7 +67,7 @@
 
     .movie-card:hover {
         transform: scale(1.02);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
+       /* box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
         border: none;
         background: transparent;
     }

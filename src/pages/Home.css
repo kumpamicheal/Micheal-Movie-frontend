@@ -4,15 +4,15 @@
     width: 100vw;         /* stretch full viewport width */
     max-width: none;      /* prevent auto-centering caps */
     margin: 0;            /* no auto-center */
-    padding: 2px;
+    padding: 0px;
     text-align: left;     /* left align by default */
     color: #ff8;
-    background-color: #222;
+   /* background-color: #222; */
 }
 
 .home main {
-    padding: 2px;
-    margin-top: 250px; /* same as header height */
+    padding: 0px;
+    margin-top: 250px; /* same as header height
 }
 
 .movie-grid,
