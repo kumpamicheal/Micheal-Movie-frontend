@@ -7,7 +7,7 @@
     cursor: pointer;
     user-select: none;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    background-color: #fff;
+    background: transparent;
     box-shadow: none;
     overflow: hidden;
     text-align: center;      /* center content inside card */
