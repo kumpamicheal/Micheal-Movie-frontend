@@ -33,22 +33,16 @@
     font-weight: 700;
     font-size: 1rem;
     line-height: 1.2;
-    margin: 0; /* remove top margin to align with image */
 
-    /* Match image width */
     display: block;
-    width: 80%;          /* match the image width */
-    padding-left: 0;     /* remove extra left padding */
-    margin: 0 auto;      /* center the title under the image */
-    border-radius: 0 0 6px 6px;
-    box-sizing: border-box;
-    text-align: center;  /* center text under the image */
+    width: 80%;              /* match the image width */
+    margin: 6px auto 0 auto; /* small gap from image and centered */
+    text-align: center;      /* center text under the image */
 
     /* Wrapping long words */
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background-color: #fff; /* keep white background */
-    padding: 6px 0;
+
 }
 
 
