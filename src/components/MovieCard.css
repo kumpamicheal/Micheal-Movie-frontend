@@ -1,6 +1,6 @@
 .movie-card {
     display: inline-block;   /* shrink-wrap the content */
-    width: 80%;      /* automatically match content width */
+    width: 90%;      /* automatically match content width */
     text-align: center;
     padding: 0;
     border-radius: 8px;
@@ -14,7 +14,7 @@
 }
 
 .movie-card img {
-    width: 80%;
+    width: 90%;
     height: auto;           /* scale naturally */
     max-height: 120px;      /* cap height on desktop */
     object-fit: cover;
@@ -28,7 +28,7 @@
 
 /* Title below image */
 .movie-card h4 {
-    color: #111; /* black text */
+    color: #282c3422; /* black text */
     font-family: 'Roboto', 'Arial', sans-serif;
     font-weight: 700;
     font-size: 1rem;
@@ -37,7 +37,7 @@
 
     /* Match image width */
     display: block;
-    width: 80%;          /* match the image width */
+    width: 90%;          /* match the image width */
     padding-left: 0;     /* remove extra left padding */
     margin: 0 auto;      /* center the title under the image */
     border-radius: 0 0 6px 6px;
@@ -65,6 +65,13 @@
 
 .movie-card:hover {
     transform: scale(1.02);
+
+    .movie-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
+        border: none;
+        background: transparent;
+    }
 
     border: none;
     background: transparent;
