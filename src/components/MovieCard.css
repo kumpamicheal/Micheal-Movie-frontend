@@ -1,6 +1,7 @@
 .movie-card {
     display: inline-block;   /* shrink-wrap the content */
-    width: fit-content;      /* automatically match content width */
+    width: 80%;      /* automatically match content width */
+    text-align: center;
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
