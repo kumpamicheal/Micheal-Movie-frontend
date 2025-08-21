@@ -1,5 +1,5 @@
 .movie-card {
-    width: 100%;            /* NEW: fixed width for uniformity */
+    width: 80px;            /* NEW: fixed width for uniformity */
    /* min-width: 80px;        /* NEW: ensure min width */
     padding: 0;
     border-radius: 8px;
@@ -85,13 +85,13 @@ body {
 
     .movies-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        grid-template-columns: repeat(auto-fill, 60px);
         gap: 10px;
     }
 
 
     .movie-card {
-        width: 100%;        /* narrower card width */
+        width: 60px;        /* narrower card width */
       /*  min-width: 50px; */
     }
     .movie-card img {
