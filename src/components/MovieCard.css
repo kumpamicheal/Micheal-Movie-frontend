@@ -41,7 +41,7 @@
     padding: 2px 0;
     width: 100%;
     box-sizing: border-box;
-    font-size: 0.55rem;   /* smaller text */
+    font-size: 0.75rem;   /* smaller text */
     line-height: 1.1;     /* tighter spacing */
     white-space: nowrap;          /* prevent wrapping */
     overflow: hidden;             /* hide overflow */
@@ -117,13 +117,13 @@
     }
 
     .movie-card h4 {
-        font-size: 0.75rem;
+        font-size: 0.55rem;
         line-height: 1.1;
         height: 1.1em;             /* consistent height for small screens */
     }
 
     .movie-card p {
-        font-size: 0.65rem;
+        font-size: 0.55rem;
         line-height: 1;
     }
 }
