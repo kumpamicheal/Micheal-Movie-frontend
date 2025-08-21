@@ -71,7 +71,7 @@
     background: white;
     display: grid;           /* flex for horizontal scroll if needed */
     gap: 10px;
-    grid-template-columns: repeat(auto-fill, 80px);
+    grid-template-columns: repeat(auto-fill, minmax(80px, 80px));
     overflow-x: auto;        /* allow scrolling if more than fits */
     padding: 10px 0;
 }
@@ -85,7 +85,7 @@ body {
 
     .movies-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, 60px);
+        grid-template-columns: repeat(auto-fill, minmax(60px, 60px));
         gap: 10px;
     }
 
