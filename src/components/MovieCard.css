@@ -1,8 +1,8 @@
 /* Movie Card Styles */
 .movie-card {
-    width: 300px;       /* fills its grid slot */
-    max-width: 300px;  /* optional: prevent cards from becoming too huge */
-    min-width: 300px;  /* still keeps a decent minimum size */
+    width: 140px;       /* fills its grid slot */
+    max-width: 140px;  /* optional: prevent cards from becoming too huge */
+    min-width: 140px;  /* still keeps a decent minimum size */
     padding: 0;
     border-radius: 8px;
     cursor: default;              /* remove pointer since not clickable */
@@ -30,7 +30,7 @@
 /* Poster image */
 .movie-card img {
     width: 100%;
-    height: 160px;
+    height: 180px;
     object-fit: cover;
     border-radius: 6px 6px 0 0;
     display: block;
@@ -89,7 +89,7 @@
 /* Grid wrapper */
 .movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 300px);  /* fixed width cards */
+    grid-template-columns: repeat(auto-fit, 140px);  /* fixed width cards */
     gap: 5px;
     justify-content: start;
     overflow-x: auto;
