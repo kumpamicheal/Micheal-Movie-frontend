@@ -1,8 +1,8 @@
 /* Movie Card Styles */
 .movie-card {
-    width: 120px !important;       /* force fixed width */
-    min-width: 120px;              /* prevent shrinking */
-    max-width: 120px;              /* prevent stretching */
+    width: 100%;       /* fills its grid slot */
+    max-width: 200px;  /* optional: prevent cards from becoming too huge */
+    min-width: 120px;  /* still keeps a decent minimum size */
     padding: 0;
     border-radius: 8px;
     cursor: default;              /* remove pointer since not clickable */
