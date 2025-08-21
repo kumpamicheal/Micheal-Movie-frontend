@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MovieCard from '../MovieCard';
+import './GenrePage.css';
 
 const GenrePage = () => {
     const { genre } = useParams();
@@ -41,10 +42,10 @@ const GenrePage = () => {
     const totalPages = Math.ceil(movies.length / moviesPerPage);
 
     return (
-        <div style={{ padding: '2rem' }}>
+        <div className="genre-page">
             <h2 style={{ textTransform: 'capitalize' }}>{genre} Movies</h2>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+            <div className="genre-movies-grid">
                 {currentMovies.length > 0 ? (
                     currentMovies.map(movie => (
                         <MovieCard key={movie._id} movie={movie} />
@@ -56,7 +57,7 @@ const GenrePage = () => {
 
             {/* ✅ Pagination Controls */}
             {totalPages > 1 && (
-                <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                <div className="genre-pagination">
                     <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         disabled={currentPage === 1}
