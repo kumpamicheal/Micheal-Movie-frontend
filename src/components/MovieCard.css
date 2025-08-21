@@ -89,7 +89,7 @@
 /* Grid wrapper */
 .movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 80px);  /* fixed width cards */
+    grid-template-columns: repeat(auto-fit, 100px);  /* fixed width cards */
     gap: 5px;
     justify-content: start;
     overflow-x: auto;

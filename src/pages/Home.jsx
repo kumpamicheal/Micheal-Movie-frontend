@@ -8,7 +8,7 @@ import './Home.css';
 
 const Home = () => {
     const [moviesByGenre, setMoviesByGenre] = useState({});
-    //const [allMovies, setAllMovies] = useState([]); // ✅ Store all movies
+    const [loading, setLoading] = useState(true); // ✅ ADDED
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -16,10 +16,6 @@ const Home = () => {
                 const res = await api.get('/movies'); // ✅ Use the correct api instance
                 const movies = res.data;
 
-                // ✅ Save all movies for Library
-                //setAllMovies(movies);
-
-                // ✅ Group by genre for GenreSection
                 const grouped = {};
                 movies.forEach((movie) => {
                     const genre = movie.genre?.trim() || 'Unknown';
@@ -32,6 +28,8 @@ const Home = () => {
                 setMoviesByGenre(grouped);
             } catch (err) {
                 console.error('Error fetching movies:', err);
+            } finally {
+                setLoading(false); // ✅ ADDED
             }
         };
 
@@ -42,7 +40,12 @@ const Home = () => {
         <div className="home">
             <Header />
             <main style={{ padding: '20px', marginTop: '20px' }}>
-                {Object.keys(moviesByGenre).length === 0 ? (
+                {loading ? ( // ✅ ADDED
+                    <div className="spinner-container">
+                        <div className="spinner"></div>
+                        <p>Welcome... Loading movies 🎬</p>
+                    </div>
+                ) : Object.keys(moviesByGenre).length === 0 ? (
                     <p>No movies available.</p>
                 ) : (
                     <>
@@ -56,8 +59,6 @@ const Home = () => {
                     </>
                 )}
             </main>
-
-
             <Footer />
         </div>
     );
