@@ -1,8 +1,8 @@
 /* Movie Card Styles */
 .movie-card {
-    width: 95px !important;       /* force fixed width */
-    min-width: 95px;              /* prevent shrinking */
-    max-width: 95px;              /* prevent stretching */
+    width: 100px !important;       /* force fixed width */
+    min-width: 100px;              /* prevent shrinking */
+    max-width: 100px;              /* prevent stretching */
     padding: 0;
     border-radius: 8px;
     cursor: default;              /* remove pointer since not clickable */
@@ -105,8 +105,9 @@
     }
 
     .movies-grid {
-        grid-template-columns: repeat(auto-fit, 80px);
-        gap: 5px;
+        grid-template-columns: repeat(4, 1fr); /* always 4 per row */
+        gap: 2px;  /* tighter spacing between cards */
+        justify-content: center;
     }
 
     .movie-card img {
@@ -131,13 +132,13 @@
 /* Tablet screens */
 @media (min-width: 769px) and (max-width: 1024px) {
     .movie-card {
-        width: 80px !important;   /* slightly wider than phone */
-        min-width: 80px;
-        max-width: 80px;
+        width: 95px !important;   /* slightly wider than phone */
+        min-width: 95px;
+        max-width: 95px;
     }
 
     .movies-grid {
-        grid-template-columns: repeat(auto-fit, 80px);
+        grid-template-columns: repeat(auto-fit, 95px);
         gap: 6px;
     }
 
