@@ -32,7 +32,7 @@
     }
 
     .genre-movies-grid {
-        /*grid-template-columns: repeat(4, minmax(0, 1fr)); /* flexible, fits 3 per row */
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 0.4rem; /* optional, smaller gap for tiny screens */
     }
 }
