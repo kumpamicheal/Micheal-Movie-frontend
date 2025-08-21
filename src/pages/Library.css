@@ -1,4 +1,4 @@
-/* Spinner styling (unchanged from your original) */
+/* Spinner styling */
 .spinner-container {
     display: flex;
     justify-content: center;
@@ -20,6 +20,7 @@
     100% { transform: rotate(360deg); }
 }
 
+/* Movie grid */
 .movie-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -51,6 +52,25 @@
     border-radius: 6px;
 }
 
+/* Library title inside card */
+.library-movie-card h4 {
+    font-size: 1rem;       /* default desktop size */
+    line-height: 1.2;
+    height: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Optional description */
+.library-movie-card p {
+    font-size: 0.9rem;
+    line-height: 1.3;
+    max-height: 3.9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Mobile responsive adjustments for library */
 @media (max-width: 768px) {
     .library-movie-card {
@@ -67,18 +87,23 @@
     .library-movie-card img {
         width: 100%;
         height: 105px;
-        max-height: 105px;
         object-fit: cover;
     }
 
     .library-movie-card h4 {
         font-size: 0.50rem;
         line-height: 1.0;
-        height: 1.0em; /* consistent height for small screens */
+        height: 1.0em;             /* consistent height for small screens */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .library-movie-card p {
         font-size: 0.55rem;
         line-height: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 2em;
     }
 }
