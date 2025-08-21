@@ -3,7 +3,7 @@
 /* Overall page styling */
 .genre-page {
     padding: 0.95rem;
-    padding-top: 50px;
+    padding-top: 70px;
     background-color: #111; /* change to whatever you like */
     color: #fff;
     min-height: 100vh;
@@ -29,7 +29,7 @@
 
     .genre-page {
         padding: 0.4rem; /* smaller padding so movies are closer to screen edge */
-        padding-top: 50px;
+        padding-top: 70px;
     }
 
     .genre-movies-grid {
