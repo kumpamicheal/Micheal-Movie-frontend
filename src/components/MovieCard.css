@@ -117,9 +117,9 @@
     }
 
     .movie-card h4 {
-        font-size: 0.55rem;
-        line-height: 1.1;
-        height: 1.1em;             /* consistent height for small screens */
+        font-size: 0.50rem;
+        line-height: 1.0;
+        height: 1.0em;             /* consistent height for small screens */
     }
 
     .movie-card p {
