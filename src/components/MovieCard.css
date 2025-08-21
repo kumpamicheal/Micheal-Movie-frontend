@@ -41,16 +41,31 @@
     padding: 2px 0;
     width: 100%;
     box-sizing: border-box;
-    font-size: 1rem;
-    line-height: 1.2;
+    font-size: 0.85rem;   /* smaller text */
+    line-height: 1.1;     /* tighter spacing */
     white-space: nowrap;          /* prevent wrapping */
     overflow: hidden;             /* hide overflow */
     text-overflow: ellipsis;      /* show "..." for long titles */
-    height: 1.2em;                /* consistent height for all titles */
+    height: 1.1em;                /* match line-height for consistency */
     text-align: center;
     background-color: #333;
     border-radius: 0 0 6px 6px;
+    color: white;                 /* title text color */
 }
+
+/* Ensure links inside h4 never change color or get underlined */
+.movie-card h4 a {
+    color: inherit;               /* inherit white from h4 */
+    text-decoration: none;        /* remove underline */
+}
+
+.movie-card h4 a:visited,
+.movie-card h4 a:hover,
+.movie-card h4 a:active {
+    color: inherit;               /* prevent blue/purple on click */
+    text-decoration: none;        /* prevent underline on hover/click */
+}
+
 
 /* Optional description or genre */
 .movie-card p {
