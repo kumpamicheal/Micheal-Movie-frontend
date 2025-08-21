@@ -12,23 +12,25 @@
 /* Grid container for movies */
 .genre-movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* default desktop layout */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* desktop */
     gap: 1rem;
 }
 
-/* Responsive layout for tablet */
+/* Tablet layout */
 @media (max-width: 1024px) {
     .genre-movies-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 per row on tablet */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 /* Mobile layout (3 per row) */
 @media (max-width: 600px) {
     .genre-movies-grid {
-        grid-template-columns: repeat(3, 1fr); /* 3 per row on mobile */
+        grid-template-columns: repeat(3, minmax(0, 1fr)); /* flexible, fits 3 per row */
+        gap: 0.5rem; /* optional, smaller gap for tiny screens */
     }
 }
+
 
 /* Pagination container */
 .genre-pagination {
