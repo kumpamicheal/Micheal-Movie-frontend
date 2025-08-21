@@ -3,6 +3,7 @@
 /* Overall page styling */
 .genre-page {
     padding: 0.95rem;
+    padding-top: 50px;
     background-color: #111; /* change to whatever you like */
     color: #fff;
     min-height: 100vh;
