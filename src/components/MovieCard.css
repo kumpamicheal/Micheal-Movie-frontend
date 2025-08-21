@@ -1,6 +1,7 @@
 .movie-card {
-    width: 80px;            /* NEW: fixed width for uniformity */
-   /* min-width: 80px;        /* NEW: ensure min width */
+    width: 80px !important;       /* NEW: force fixed width */
+    min-width: 80px;              /* ensure it doesn't shrink */
+    max-width: 80px;              /* ensure it doesn't stretch */
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
@@ -12,94 +13,42 @@
     text-align: left;
     background: transparent;
     box-shadow: none;
-    overflow: hidden; /* clip anything spilling */
-    /*border: 2px solid limegreen !important; */
-}
-
-.movie-card img {
-    width: 100%;        /* fill entire card width */
-    height: 110px;      /* force fixed height */
-    object-fit: cover;  /* crop to remove black borders */
-    border-radius: 6px 6px 0 0;
-    display: block;
-}
-
-/* Title below image */
-.movie-card h4 {
-    color: #fff; /* black text */
-    font-family: 'Roboto', 'Arial', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 1.2;
-    margin: 0; /* remove top margin to align with image */
-
-    /* Full-width title bar */
-    display: block;
-    width: 100%;
-    background-color: #333;
-    padding: 6px 0;
-    border-radius: 0 0 6px 6px;
-    text-align: center;
-    padding-left: 6px;
-    box-sizing: border-box;
-
-    /* Wrapping long words */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-
-/* Optional: description or genre */
-.movie-card p {
-    color: #ccc;
-    font-size: 0.9rem;
-    line-height: 1.3;
-    margin-top: 8px;
-    max-height: 3.9em;
     overflow: hidden;
-    text-overflow: ellipsis;
+    box-sizing: border-box;
+    margin: 0;
 }
 
-.movie-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle hover shadow */
-    border: none;
-    background: transparent;
+.movie-card h4 {
+    padding: 2px 0;              /* reduced padding to avoid overflow */
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Grid wrapper for 4 per row */
 .movies-grid {
-    background: white;
-    display: grid;           /* flex for horizontal scroll if needed */
-    gap: 10px;
-    grid-template-columns: repeat(auto-fill, 80px);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 80px);  /* fixed width cards */
+    gap: 5px;                                        /* smaller gap for exact fit */
     justify-content: start;
-    overflow-x: auto;        /* allow scrolling if more than fits */
+    overflow-x: auto;
     padding: 10px 0;
 }
 
-body {
-    background: white !important;
-}
-
-/* Responsive adjustments */
+/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
-
-    .movies-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 60px);
-        gap: 10px;
-    }
-
-
     .movie-card {
-        width: 60px;        /* narrower card width */
-      /*  min-width: 50px; */
+        width: 60px !important;
+        min-width: 60px;
+        max-width: 60px;
+    }
+    .movies-grid {
+        grid-template-columns: repeat(auto-fill, 60px);
+        gap: 5px;
     }
     .movie-card img {
-        width: 100%;        /* fill card width */
-        height: 160px;      /* taller poster height */
+        width: 100%;
+        height: 160px;
         max-height: 160px;
-        object-fit: cover;  /* crop if needed */
+        object-fit: cover;
     }
     .movie-card h4 {
         font-size: 0.75rem;
