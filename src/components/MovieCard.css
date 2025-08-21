@@ -1,8 +1,8 @@
 /* Movie Card Styles */
 .movie-card {
-    width: 100px !important;       /* force fixed width */
-    min-width: 100px;              /* prevent shrinking */
-    max-width: 100px;              /* prevent stretching */
+    width: 120px !important;       /* force fixed width */
+    min-width: 120px;              /* prevent shrinking */
+    max-width: 120px;              /* prevent stretching */
     padding: 0;
     border-radius: 8px;
     cursor: default;              /* remove pointer since not clickable */
@@ -30,7 +30,7 @@
 /* Poster image */
 .movie-card img {
     width: 100%;
-    height: 110px;
+    height: 160px;
     object-fit: cover;
     border-radius: 6px 6px 0 0;
     display: block;
