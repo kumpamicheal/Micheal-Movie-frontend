@@ -2,7 +2,7 @@
 
 /* Overall page styling */
 .genre-page {
-    padding: 1rem;
+    padding: 0.95rem;
     background-color: #111; /* change to whatever you like */
     color: #fff;
     min-height: 100vh;
@@ -62,4 +62,29 @@
 .genre-pagination button:disabled {
     opacity: 0.5;
     cursor: default;
+}
+
+/* ✅ Spinner styles for GenreSection */
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh; /* centers spinner vertically */
+    color: #ff8;  /* same as text color for movies */
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #444;
+    border-top: 4px solid #ff8; /* spinner color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
