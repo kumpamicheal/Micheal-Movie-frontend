@@ -105,7 +105,7 @@
     }
 
     .movies-grid {
-        grid-template-columns: repeat(4, 1fr); /* always 4 per row */
+        /*grid-template-columns: repeat(4, 1fr); /* always 4 per row */
         gap: 2px;  /* tighter spacing between cards */
         justify-content: center;
     }
@@ -129,32 +129,3 @@
     }
 }
 
-/* Tablet screens */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .movie-card {
-        width: 95px !important;   /* slightly wider than phone */
-        min-width: 95px;
-        max-width: 95px;
-    }
-
-    .movies-grid {
-        grid-template-columns: repeat(auto-fit, 95px);
-        gap: 6px;
-    }
-
-    .movie-card img {
-        height: 110px;             /* shorter than desktop, taller than phone */
-        max-height: 110px;
-    }
-
-    .movie-card h4 {
-        font-size: 0.65rem;        /* slightly larger than phone */
-        line-height: 1.1;
-        height: 1.1em;
-    }
-
-    .movie-card p {
-        font-size: 0.6rem;
-        line-height: 1;
-    }
-}

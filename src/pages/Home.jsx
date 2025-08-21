@@ -43,7 +43,7 @@ const Home = () => {
                 {loading ? ( // ✅ ADDED
                     <div className="spinner-container">
                         <div className="spinner"></div>
-                        <p>Welcome... Loading movies 🎬</p>
+                        <p>Welcome... Loading movies </p>
                     </div>
                 ) : Object.keys(moviesByGenre).length === 0 ? (
                     <p>No movies available.</p>
