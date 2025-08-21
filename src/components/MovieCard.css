@@ -71,7 +71,7 @@
     background: white;
     display: grid;           /* flex for horizontal scroll if needed */
     gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fill, 80px);
     overflow-x: auto;        /* allow scrolling if more than fits */
     padding: 10px 0;
 }
