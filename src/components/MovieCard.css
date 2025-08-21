@@ -1,8 +1,8 @@
 /* Movie Card Styles */
 .movie-card {
-    width: 80px !important;       /* force fixed width */
-    min-width: 80px;              /* prevent shrinking */
-    max-width: 80px;              /* prevent stretching */
+    width: 95px !important;       /* force fixed width */
+    min-width: 95px;              /* prevent shrinking */
+    max-width: 95px;              /* prevent stretching */
     padding: 0;
     border-radius: 8px;
     cursor: default;              /* remove pointer since not clickable */
@@ -41,7 +41,7 @@
     padding: 2px 0;
     width: 100%;
     box-sizing: border-box;
-    font-size: 0.75rem;   /* smaller text */
+    font-size: 0.85rem;   /* smaller text */
     line-height: 1.1;     /* tighter spacing */
     white-space: nowrap;          /* prevent wrapping */
     overflow: hidden;             /* hide overflow */
@@ -124,6 +124,36 @@
 
     .movie-card p {
         font-size: 0.55rem;
+        line-height: 1;
+    }
+}
+
+/* Tablet screens */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .movie-card {
+        width: 80px !important;   /* slightly wider than phone */
+        min-width: 80px;
+        max-width: 80px;
+    }
+
+    .movies-grid {
+        grid-template-columns: repeat(auto-fit, 80px);
+        gap: 6px;
+    }
+
+    .movie-card img {
+        height: 110px;             /* shorter than desktop, taller than phone */
+        max-height: 110px;
+    }
+
+    .movie-card h4 {
+        font-size: 0.65rem;        /* slightly larger than phone */
+        line-height: 1.1;
+        height: 1.1em;
+    }
+
+    .movie-card p {
+        font-size: 0.6rem;
         line-height: 1;
     }
 }
