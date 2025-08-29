@@ -9,7 +9,10 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import PrivateRoute from './components/routes/PrivateRoute';
 import GenrePage from './components/routes/GenrePage';
 import SearchResults from './pages/SearchResults';
-import Library from './pages/Library'; // ✅ New Import
+import DownloadsPage from "./pages/DownloadsPage";
+import Profile from './pages/Profile';
+
+
 
 import Footer from './components/Footer';
 import TopNav from './components/TopNav';
@@ -41,7 +44,9 @@ const AppWrapper = () => {
                 <Route path="/movie/:id" element={<MovieDetails />} />
                 <Route path="/genre/:genre" element={<GenrePage />} />
                 <Route path="/search" element={<SearchResults />} />
-                <Route path="/library" element={<Library />} /> {/* ✅ NEW Route */}
+                <Route path="/downloads" element={<DownloadsPage />} />
+                <Route path="/profile" element={<Profile />} />
+
 
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLogin />} />

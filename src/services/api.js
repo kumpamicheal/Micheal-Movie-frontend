@@ -2,8 +2,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: 'https://micheal-movie-backend.onrender.com/api', // production URL
 });
+
 
 // ✅ Always read admin fresh before each request
 api.interceptors.request.use((config) => {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css'; // Keep your styling
 
-const Footer = () => { // ✅ accept movies from Home
+const Footer = () => {
     return (
         <footer className="footer">
             {/* Home Icon */}
@@ -12,14 +12,14 @@ const Footer = () => { // ✅ accept movies from Home
                 <span className="footer-label">Home</span>
             </Link>
 
-            {/* Center Library Icon */}
+            {/* Center Download Icon (replacing Library) */}
             <Link
-                to="/library"
+                to="/downloads"
                 className="footer-icon center-icon"
-                aria-label="Library"
+                aria-label="Downloads"
             >
-                <i className="fas fa-th-large"></i>
-                <span className="footer-label">Library</span>
+                <i className="fas fa-download"></i>
+                <span className="footer-label">Downloads</span>
             </Link>
 
             {/* Profile Icon */}

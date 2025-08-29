@@ -11,7 +11,8 @@ const SearchResults = () => {
     const [error, setError] = useState(null);
 
     const queryParams = new URLSearchParams(location.search);
-    const query = queryParams.get('query')?.trim();
+    const rawQuery = queryParams.get('query');
+    const query = rawQuery ? rawQuery.trim() : '';
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -26,15 +27,23 @@ const SearchResults = () => {
             setError(null);
 
             try {
-                // ✅ Match backend: use title param instead of query
-                const res = await api.get(`/movies/search?query=${encodeURIComponent(query)}`);
+                const encodedQuery = encodeURIComponent(query);
+                const res = await api.get(`/movies/search?query=${encodedQuery}`);
                 console.log('Search API response:', res.data);
 
-                // ✅ The backend returns plain array, not { movies: [...] }
-                const data = Array.isArray(res.data) ? res.data : res.data.movies;
+                // Safely handle empty, null, or unexpected responses
+                let data = [];
+                if (res && res.data) {
+                    if (Array.isArray(res.data)) {
+                        data = res.data;
+                    } else if (Array.isArray(res.data.movies)) {
+                        data = res.data.movies;
+                    }
+                }
 
-                if (Array.isArray(data) && data.length > 0) {
+                if (data.length > 0) {
                     setMovies(data);
+                    setNotFound(false);
                 } else {
                     setMovies([]);
                     setNotFound(true);
@@ -42,6 +51,7 @@ const SearchResults = () => {
             } catch (err) {
                 console.error('Search error:', err);
                 setError('Something went wrong while searching. Please try again later.');
+                setMovies([]);
                 setNotFound(true);
             } finally {
                 setLoading(false);
@@ -61,9 +71,7 @@ const SearchResults = () => {
                         {query ? `Results for "${query}"` : 'No query provided'}
                     </h2>
 
-                    {error && (
-                        <p className="error-text">{error}</p>
-                    )}
+                    {error && <p className="error-text">{error}</p>}
 
                     {notFound ? (
                         <p className="no-results-text">

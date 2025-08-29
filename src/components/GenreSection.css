@@ -70,7 +70,7 @@
 /* ------------------ NEW MOBILE ADJUSTMENTS ------------------ */
 @media (max-width: 480px) {
     .genre-heading {
-        font-size: 1.4rem; /* smaller font on phones */
+        font-size: 1.1rem; /* smaller font on phones */
         letter-spacing: 1px; /* slightly tighter spacing */
     }
 

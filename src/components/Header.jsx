@@ -54,7 +54,7 @@ export default function Header() {
     }, [images.length]);
 
     return (
-        <header style={{ width: '100%', height: '98px', overflow: 'hidden',marginBottom: '0px' }}>
+        <header style={{ width: '100%', height: '120px', overflow: 'hidden',marginBottom: '0px' }}>
             <Swiper
                 onSwiper={(swiper) => { swiperRef.current = swiper; }}
                 modules={[Autoplay]}
@@ -70,7 +70,7 @@ export default function Header() {
                             alt={`Slide ${index + 1}`}
                             style={{
                                 width: '100%',
-                                height: '98px',
+                                height: '120px',
                                 objectFit: 'cover',
                                 display: 'block',
                                 marginBottom: '0px',

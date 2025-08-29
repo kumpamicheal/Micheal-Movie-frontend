@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './TopNav.css';
 
 // ✅ Added extra genres to test horizontal scrolling
-const genres = ['Horror', 'Action', 'Comedy', 'Drama', 'Romance', 'Sci-Fi', 'Thriller', 'Adventure'];
+const genres = ['Action', 'Drama', 'Adventure', 'Horror', 'Sci-Fi', 'Romance', 'Thriller', 'Nollywood'];
 
 const TopNav = () => {
     const location = useLocation();
