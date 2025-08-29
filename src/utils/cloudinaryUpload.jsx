@@ -23,13 +23,10 @@ export const uploadMediaToCloudinary = async (posterFile, videoFile, onProgress)
         const response = await axios.post(cloudinaryURL, formData, {
             headers: { "Content-Type": "multipart/form-data" },
             onUploadProgress: (progressEvent) => {
-                if (onProgress) {
-                    const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    if (resourceType === "video") {
-                        onProgress({ video: percent });
-                    } else {
-                        onProgress({ poster: percent });
-                    }
+                const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                // Safe callback: only call if onProgress is a function
+                if (typeof onProgress === "function") {
+                    onProgress({ [resourceType]: percent });
                 }
             },
         });
