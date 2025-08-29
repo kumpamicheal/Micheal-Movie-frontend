@@ -1,9 +1,8 @@
 // utils/cloudinaryUpload.jsx
 import axios from "axios";
-import api from "../services/api";
 
 /**
- * Uploads poster and video directly to Cloudinary using signed params from backend
+ * Uploads poster and video directly to Cloudinary using unsigned presets
  * @param {File} posterFile
  * @param {File} videoFile
  * @param {string} title
@@ -13,29 +12,19 @@ import api from "../services/api";
 export const uploadMediaToCloudinary = async (posterFile, videoFile, title, genre, onProgress) => {
     if (!posterFile || !videoFile) throw new Error("Poster and video files are required");
 
-    // 1️⃣ Request signed params for poster and video
-    const [posterSigRes, videoSigRes] = await Promise.all([
-        api.get("/movies/upload-signature", { params: { folder: "posters", resource_type: "image" } }),
-        api.get("/movies/upload-signature", { params: { folder: "movies", resource_type: "video" } }),
-    ]);
-
-    const uploadToCloud = async (file, sigRes) => {
+    const uploadToCloud = async (file, preset, type) => {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("api_key", sigRes.data.apiKey);
-        formData.append("timestamp", sigRes.data.timestamp);
-        formData.append("signature", sigRes.data.signature);
-        formData.append("folder", sigRes.data.folder);
+        formData.append("upload_preset", preset);
 
-        // Direct Cloudinary upload URL
-        const cloudinaryURL = `https://api.cloudinary.com/v1_1/${sigRes.data.cloudName}/${sigRes.data.resource_type}/upload`;
+        const cloudinaryURL = `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/${type}/upload`;
 
         const response = await axios.post(cloudinaryURL, formData, {
             headers: { "Content-Type": "multipart/form-data" },
             onUploadProgress: (progressEvent) => {
                 if (onProgress) {
                     const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    if (sigRes.data.resource_type === "video") {
+                    if (type === "video") {
                         onProgress({ video: percent });
                     } else {
                         onProgress({ poster: percent });
@@ -50,13 +39,12 @@ export const uploadMediaToCloudinary = async (posterFile, videoFile, title, genr
         };
     };
 
-    // 2️⃣ Upload poster and video in parallel
+    // Replace 'unsigned_posters_upload' and 'unsigned_movies_upload' with your Cloudinary presets
     const [posterResult, videoResult] = await Promise.all([
-        uploadToCloud(posterFile, posterSigRes),
-        uploadToCloud(videoFile, videoSigRes),
+        uploadToCloud(posterFile, "unsigned_posters_upload", "image"),
+        uploadToCloud(videoFile, "unsigned_movies_upload", "video"),
     ]);
 
-    // 3️⃣ Return URLs and public IDs
     return {
         posterURL: posterResult.url,
         posterPublicId: posterResult.publicId,
