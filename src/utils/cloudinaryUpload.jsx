@@ -17,7 +17,7 @@ export const uploadMediaToCloudinary = async (posterFile, videoFile, title, genr
         formData.append("file", file);
         formData.append("upload_preset", preset);
 
-        const cloudinaryURL = `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/${type}/upload`;
+        const cloudinaryURL = `https://api.cloudinary.com/v1_1/dutoofaax/${type}/upload`;
 
         const response = await axios.post(cloudinaryURL, formData, {
             headers: { "Content-Type": "multipart/form-data" },
